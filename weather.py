@@ -66,13 +66,14 @@ elif more_info == 'yes':
     print('Options: Temp_min/max, air pressure, wind speed')
     print()  
     options = input('What would you like?: ')
-    if options == 'Temp_min':
+    print('Make sure that ONLY the FIRST letter of your response is capital')
+    if options == 'Temp min':
         print(int(final_tempmin))
     elif options == 'Wind speed':
         print(wind_speed)
         print('*Wind speed is measured in MPH (Miles per hour)*')
         print()
-    elif options == 'Temp_max':
+    elif options == 'Temp max':
         print(int(final_tempmax))
     elif options == 'Air pressure':
         print(air_pressure)
