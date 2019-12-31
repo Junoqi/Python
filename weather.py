@@ -23,6 +23,7 @@ country_name_farh = json_data['sys']['country']
 final_tempmax = temp_max * 9 / 5 -459.67
 final_tempmin = temp_min * 9 / 5 -459.67
 final_temp = temp * 9 / 5 -459.67
+windspeed_kph = wind_speed * 1.609
 
 fahernheit_countries = {'AT', 'AR', 'KY', 'FM', 'MY', 'US'}
 
@@ -87,9 +88,12 @@ elif more_info == 'yes':
         else:
             print(int(final_tempmin - 32 * 5 / 9))
     elif options == 'Wind speed':
-        print(wind_speed + 3)
-        print('*Wind speed is measured in MPH (Miles per hour)*')
-        print()
+        if country_name_farh in fahernheit_countries:
+            print(wind_speed + 3)
+            print('*Wind speed is measured in MPH (Miles per hour)*')
+        else:
+            print(windspeed_kph + 3)
+            print('*Wind speed is measured in KPH (Kilometers per hour)*')
     elif options == 'Temp max':
         if country_name_farh in fahernheit_countries:
             print(int(final_tempmax))
