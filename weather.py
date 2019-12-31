@@ -52,7 +52,7 @@ elif weather == 'Clouds':
     
 print()
 if final_temp < 30:
-    print('Due to the below freezing temperature, you should probaby wear a coat and limit time outside')
+    print('Due to the below freezing temperature, you should probaby wear winter gear and limit time outside')
 elif final_temp > 90:
     print('Due to the extreme heat, you should limit time in the sun')
 print()
@@ -63,10 +63,10 @@ if more_info == 'no':
     print('ok')
 elif more_info == 'yes':
     print()
-    print('Options: Temp_min/max, air pressure, wind speed')
+    print('Options: Temp min/max, air pressure, wind speed')
+    print('Make sure that ONLY the FIRST letter of your response is capital')
     print()  
     options = input('What would you like?: ')
-    print('Make sure that ONLY the FIRST letter of your response is capital')
     if options == 'Temp min':
         print(int(final_tempmin))
     elif options == 'Wind speed':
@@ -79,4 +79,6 @@ elif more_info == 'yes':
         print(air_pressure)
         print('*Air pressure is measured in atm (Atmospheric Pressure)*')
         print()
+    else:
+        print('Invalid response')
 print('Go to ' + url + ' for more info')
