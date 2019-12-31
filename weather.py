@@ -3,7 +3,8 @@ import requests
 import math
 
 api_adress = 'http://api.openweathermap.org/data/2.5/weather?appid=9aac93c4442484af028d88eb1727111c&q='
-city = input('Location :')
+city = input('Location:')
+country = input('What country do you live in?: ')
 print()
 
 url = api_adress + city
@@ -17,15 +18,28 @@ temp_min = json_data['main']['temp_min']
 temp_max = json_data['main']['temp_max']
 air_pressure = json_data['main']['pressure']
 wind_speed = json_data['wind']['speed']
+lon = json_data['coord']['lon']
+lat = json_data['coord']['lat']
 final_tempmax = temp_max * 9 / 5 -459.67
 final_tempmin = temp_min * 9 / 5 -459.67
 final_temp = temp * 9 / 5 -459.67
+
+fahernheit_countries = {'Bahamas', 'Palau', 'Belize', 'Cayman Islands', 'Micronesia', 'Marshall Islands', 'United States'}
+
 print('The forecast is ' + weather)
 print()
 print('The temperature is:')
-print(int(final_temp))
+
+if country in fahernheit_countries:
+    print(int(final_temp))
+else:
+    print(int(temp - 273.15))
 print('But it feels like: ')
-print(int(real_feel * 9 / 5 -459.67))
+
+if country in fahernheit_countries:
+    print(int(real_feel * 9 / 5 -459.67))
+else:
+    print(int(real_feel - 273.15))
 print()
 print('The humidity is:')
 print(humidity)
@@ -57,28 +71,40 @@ elif final_temp > 90:
     print('Due to the extreme heat, you should limit time in the sun')
 print()
 
-more_info = input('Would you like any more specific info? Ex. Sunrise/Sunset:')
+more_info = input('Would you like any more specific info? Ex. High temp, low temp:')
 
 if more_info == 'no':
     print('ok')
 elif more_info == 'yes':
     print()
-    print('Options: Temp min/max, air pressure, wind speed')
+    print('Options: Temp min/max, air pressure, wind speed, Lon_Lat')
     print('Make sure that ONLY the FIRST letter of your response is capital')
     print()  
     options = input('What would you like?: ')
     if options == 'Temp min':
-        print(int(final_tempmin))
+        if country in fahernheit_countries:
+            print(int(final_tempmin))
+        else:
+            print(int(final_tempmin - 32 * 5 / 9))
     elif options == 'Wind speed':
-        print(wind_speed)
+        print(wind_speed + 3)
         print('*Wind speed is measured in MPH (Miles per hour)*')
         print()
     elif options == 'Temp max':
-        print(int(final_tempmax))
+        if country in fahernheit_countries:
+            print(int(final_tempmax))
+        else:
+            print(int(final_tempmax - 32 * 5 / 9))
     elif options == 'Air pressure':
         print(air_pressure)
         print('*Air pressure is measured in atm (Atmospheric Pressure)*')
         print()
+    elif options == 'Lon_lat':
+        print('Longitude:')
+        print(lon)
+        print('Latitude:')
+        print(lat)
+        print()
     else:
-        print('Invalid response')
+        print('INVALID RESPONSE')
 print('Go to ' + url + ' for more info')
