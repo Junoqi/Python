@@ -4,7 +4,6 @@ import math
 
 api_adress = 'http://api.openweathermap.org/data/2.5/weather?appid=9aac93c4442484af028d88eb1727111c&q='
 city = input('Location:')
-country = input('What country do you live in?: ')
 print()
 
 url = api_adress + city
@@ -20,23 +19,24 @@ air_pressure = json_data['main']['pressure']
 wind_speed = json_data['wind']['speed']
 lon = json_data['coord']['lon']
 lat = json_data['coord']['lat']
+country_name_farh = json_data['sys']['country']
 final_tempmax = temp_max * 9 / 5 -459.67
 final_tempmin = temp_min * 9 / 5 -459.67
 final_temp = temp * 9 / 5 -459.67
 
-fahernheit_countries = {'Bahamas', 'Palau', 'Belize', 'Cayman Islands', 'Micronesia', 'Marshall Islands', 'United States'}
+fahernheit_countries = {'AT', 'AR', 'KY', 'FM', 'MY', 'US'}
 
 print('The forecast is ' + weather)
 print()
 print('The temperature is:')
 
-if country in fahernheit_countries:
+if country_name_farh in fahernheit_countries:
     print(int(final_temp))
 else:
     print(int(temp - 273.15))
 print('But it feels like: ')
 
-if country in fahernheit_countries:
+if country_name_farh in fahernheit_countries:
     print(int(real_feel * 9 / 5 -459.67))
 else:
     print(int(real_feel - 273.15))
@@ -82,7 +82,7 @@ elif more_info == 'yes':
     print()  
     options = input('What would you like?: ')
     if options == 'Temp min':
-        if country in fahernheit_countries:
+        if country_name_farh in fahernheit_countries:
             print(int(final_tempmin))
         else:
             print(int(final_tempmin - 32 * 5 / 9))
@@ -91,7 +91,7 @@ elif more_info == 'yes':
         print('*Wind speed is measured in MPH (Miles per hour)*')
         print()
     elif options == 'Temp max':
-        if country in fahernheit_countries:
+        if country_name_farh in fahernheit_countries:
             print(int(final_tempmax))
         else:
             print(int(final_tempmax - 32 * 5 / 9))
