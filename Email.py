@@ -1,3 +1,6 @@
+
+from mailmerge import MailMerge
+from datetime import date
 from tkinter import *
 from tkcalendar import Calendar,DateEntry
 from tkinter import messagebox
@@ -9,7 +12,15 @@ import time
 from datetime import date
 import shutil
 
+print('The printed out letter will appear here.')
+print('========================================')
+print('''In the event that for some reason the letter doesn't save to a file it can be copied and pasted from here manually.''')
+print('========================================')
 root = tk.Tk()
+
+template = r'C:\Users\Henry Pope IV\Documents\Follow-up Service\Programs\Ascent-Dental-Letter-Template.docx'
+
+document = MailMerge(template)
 
 root.title('')
 root.geometry('+50+50')
@@ -183,8 +194,7 @@ def submit():
 
     NameVar = Name.get()
 
-    fileName = NameVar + ' Letter.docx' 
-    file = open(fileName, 'a')
+    fileName = NameVar + ' Letter' + '.docx' 
 
     today = date.today()
 
@@ -268,7 +278,6 @@ Tushin Shah, DDS
     '''
 
     WaitAndWatchPara = '''
-
 Wait and Watch
     
 As far as your teeth are concerned, I would recommend a watch and wait on tooth #''' + WaitAndWatchToothNumberPara + '''.  If we note any indication for treatment, we will let you know and treat it accordingly.
@@ -276,32 +285,27 @@ As far as your teeth are concerned, I would recommend a watch and wait on tooth 
     '''
     
     RestorativeTreatmentPara = '''
-
 Restorative Treatment
     
 As far as your teeth are concerned, I would recommend placing restorations on teeth #’s''' + RestorativeTreatmentToothNumberPara + '''or a watch and wait on teeth #’s ''' + RestorativeTreatmentToothNumberPara + '''. These restorations can be placed with silver amalgam, tooth colored composite, and gold or porcelain materials.  My recommendations currently are to consider the silver amalgam or tooth colored composite restorations on your back teeth and composite restorations on the front teeth.  The fees for the restorations range from $195 - $425 per tooth.  
 
-
     '''
 
     CrownTreatmentPara = '''
-
 Crown Treatment
 
 Teeth #’s''' + CrownTreatmentNumberPara + ''' have been recommended for crown treatment. Many times, your teeth may require posts and buildups for additional support. The fees for posts and build-ups are $400-550 per tooth, the fee for crowns is $1575 per tooth and the fee for a diagnostic wax-up is $175 per crown.
 
-    
     '''
 
     RootCanalTreatmentPara = '''
-
 Root Canal Treatment
 
 Teeth #''' + RootCanalTreatmentNumberPara + ''' have been recommended for endodontic or root canal treatment.  The fees for this are $1200 - $1600 per tooth and the appointments could take between 1 – 4 visits.  Once root canal treatment is complete, many times, your teeth may require posts, build-ups, and crowns for additional support.  The fees for posts and build-ups are $400-550 per tooth, the fee for crowns is $1575 per tooth and the fee for a diagnostic wax-up is $175 per crown.
+    
     '''
 
     WisdomTeethPara = '''
-
 Wisdom Teeth    
 
 Many patients generally find it difficult to keep their wisdom teeth clean and therefore they usually become decayed and infected.  I would therefore recommend the extraction of your wisdom teeth, teeth #''' + WisdomTeethNumberPara + ''' before they give you any problems.  The fees for the extractions range from $195 - $650 per tooth depending on the difficulty of the extraction.  An alveoplasty is often needed to recontour the bone after extractions the fee for this is $175 per tooth and $850 per quadrant (upper right, lower right, upper left and lower left).  Additional teeth that are recommended for extraction are #’s''' + WisdomTeethNumberPara +  ''' .  
@@ -309,16 +313,13 @@ Many patients generally find it difficult to keep their wisdom teeth clean and t
     '''
 
     WaitAndWatchOnWisdomTeethPara = '''
-
 Wait and Watch on Wisdom Teeth
 
 Many patients generally find it difficult to keep their wisdom teeth clean and therefore they usually become decayed and infected.  I would therefore recommend a wait and watch on your wisdom teeth, teeth #''' + WaitAndWatchOnWisdomTeethNumberPara + '''. If we note any indication for treatments, we will let you know and treat them accordingly. The fees for the extractions range from $195 - $650 per tooth depending on the difficulty of the extraction.  An alveoplasty is often needed to recontour the bone after extractions the fee for this is $175 per tooth and $850 per quadrant (upper right, lower right, upper left and lower left).  Additional teeth that are recommended for extraction are #’s ''' + WaitAndWatchOnWisdomTeethNumberPara + '''.  
 
-
     '''
 
     ReplacingMissingTeethPara = '''
-
 Replacing Missing Teeth
 
 Once the above treatment is complete, I would recommend that you consider replacing your missing teeth with options including selective fixed bridge treatment, selective implants or removable partial dentures or full dentures.  If you are interested in any of these options, please let us know and we can discuss them in more detail at a future appointment.
@@ -326,26 +327,21 @@ Once the above treatment is complete, I would recommend that you consider replac
     '''
 
     ExtractionTreatmentPara = '''
-
 Extraction Treatment
 
 Teeth #’s ''' + ExtractingTreatmentNumberPara + ''' have been recommended for extraction treatments. The fees for the extractions range from $195 - $650 per tooth depending on the difficulty of the extraction.  An alveoplasty is often needed to recontour the bone after extractions the fee for this is $175 per tooth and $850 per quadrant (upper right, lower right, upper left and lower left). In some cases it is recommended to place a bone graft in the extraction site and the fee for that is $550. 
 
-    
     '''
 
 
     DiagnosticInformationPara = '''
-
 Diagnostic Information 
 
 As part of the process of developing your treatment plan, we may need to gather diagnostic information.  This may include but not limited to models of your mouth, diagnostic photographs, an ICAT scan, and a full mouth evaluation.  The fee for this is from $515 - $818.  The ICAT scan offers a 3-D view of an area which can be very valuable in planning your treatment plan by reducing risk and anticipate problems.  
 
-
     '''
 
     SedationDentistryPara = '''
-
 Sedation Dentistry
 
 For some or all aspects of your treatment, you may be interested in sedation dentistry.  We offer several levels of sedation, nitrous, oral, IV, and hospital sedation.  Generally nitrous provides the lightest, while hospital sedation is the deepest.  Most patients inquire about IV sedation which induces a state of deep relaxation and a feeling of not being bothered by what’s going on.  Many times, patients experience retrograde amnesia and do not remember their experience.  For this procedure, we are requiring that everything is planned ahead of time for your dental treatment.  We require that you have nothing to eat or drink at least 8 hours prior to the IV sedation and that you are driven to and from your appointment by a responsible adult.  We also require that someone is able to care for you at home for several hours after the appointment.  The fee for the procedure is $550 for the first hour and $100 for each 15 minutes following.   We also offer oral and inhalation sedation and the fee’s range from $160 - $395.  As with any sedation risk, death can and should be considered.  
@@ -358,7 +354,6 @@ The use of sedation should not be taken lightly in your consideration.  For our 
 Radiographs
 
 As far as radiographs are concerned, I would recommend that we take a panoramic radiograph and/or a full mouth series of radiographs ever 3 – 5 years and bitewing radiographs every 1 – 2 years.  We understand that many times there is a concern regarding radiographs and radiation exposure.  At Ascent Dental Care, all our radiographs are digital to provide the lease amount of radiation.  We cannot diagnose what we do not see and in today’s health care systems, it can be considered malpractice not to have this information.  Along with this, many insurance companies will reject your dental claim without radiographs, meaning you would be responsible for the entire fee.  The fees would range from $50 - $550.
-
     
     '''
 
@@ -435,7 +430,7 @@ Here are a list of services we provide:
 -Extractions including wisdom teeth
 -Endodontics
 -Periodontics
--Dentures and same day DEnture and partial denture repairs
+-Dentures and same day Denture and partial denture repairs
 -Cosmetic dentistry
 -Crown and bridge with option to be completed in one appointment
 -Dental implants
@@ -447,38 +442,57 @@ Here are a list of services we provide:
     '''
 
     print(GlobalIntro)
-
+    document.merge(Letter=GlobalIntro)
     if WaitAndWatchVariable == 1:
         print(WaitAndWatchPara)
+        document.merge(WaitAndWatch=str(WaitAndWatchPara))
     if RestorativeTreatmentVariable == 1:
         print(RestorativeTreatmentPara)
+        document.merge(RestorativeTreatment=str(RestorativeTreatmentPara))
     if CrownTreatmentVariable == 1:
         print(CrownTreatmentPara)
+        document.merge(CrownTreatment=str(CrownTreatmentPara))
     if RootCanalTreatmentVariable == 1:
         print(RootCanalTreatmentPara)
+        document.merge(RootCanal=str(RootCanalTreatmentPara))
     if WisdomTeethVariable == 1:
         print(WisdomTeethPara)
+        document.merge(WisdomTeeth=str(WisdomTeethPara))
     if WaitAndWatchOnWisdomTeethVariable == 1:
         print(WaitAndWatchOnWisdomTeethPara)
+        document.merge(WaitAndWatchOnWisdomTeeth=str(WaitAndWatchOnWisdomTeethPara))
     if ExtractingTreatmentVariable == 1:
         print(ExtractionTreatmentPara)
+        document.merge(ExtractionTreatment=str(ExtractionTreatmentPara))
+
 
 
     print(DiagnosticInformationPara)
+    document.merge(DiagnosticInformation=DiagnosticInformationPara)
     print(SedationDentistryPara)
+    document.merge(SedationDentistry=SedationDentistryPara)
     print(RadiographsPara)
+    document.merge(Radiographs=RadiographsPara)    
     print(VELscopePara)
+    document.merge(VELscope=VELscopePara)    
     print(PerioProtectPara)
+    document.merge(PerioProtect=PerioProtectPara)    
     print(OcclusalGuardPara)
+    document.merge(OcclusalGuard=OcclusalGuardPara)    
     print(OrthodonticTreatmentPara)
+    document.merge(OrthodonticTreatment=OrthodonticTreatmentPara)    
     print(TeethWhiteningPara)
+    document.merge(TeethWhitening=TeethWhiteningPara)    
     print(InformationOnBotoxDermafilPara)
+    document.merge(InformationOnBotoxDermafil=InformationOnBotoxDermafilPara)    
     print(PaymentOptionsPara)
+    document.merge(PaymentOptions=PaymentOptionsPara)    
     print(FinalPara)
+    document.merge(Closing=FinalPara)    
     print(ServicesPara)
+    document.merge(Services=ServicesPara)    
 
-    sys.stdout = file
-
+    document.write(NameVar + ' letter.docx')
 
 def exit(): 
     root.destroy()
@@ -491,6 +505,9 @@ MainSubmit.pack()
 
 DoubleClick = Label(text='*Double Click The Submit Button!*', fg='red')
 DoubleClick.pack()
+
+CloseApp = Label(text='*You must close the app in order to open a letter*', fg='red')
+CloseApp.pack()
 
 BlankSpacer6 = Label(text='')
 BlankSpacer6.pack()
