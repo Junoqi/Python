@@ -86,6 +86,15 @@ async def dinner(ctx):
     print(str(ctx.message.author) + ' found what time Ricky will eat dinner tonight.')
     print('=======')
 
+@client.command()
+async def gun(ctx):
+
+    PrimGuns = ['Stinger', 'Spectre', 'Bucky', 'Judge', 'BullDog', 'Guardian', 'Phantom', 'Vandal', 'Marshal', 'Operator', 'Ares', 'Odin']
+    SecGuns = ['Classic', 'Shorty', 'Frenzy', 'Ghost', 'Sheriff']
+
+    await ctx.send('Primary: ' + random.choice(PrimGuns))
+    await ctx.send('Secondary: ' + random.choice(SecGuns))    
+    
 #clear messages
 @client.command()
 @commands.has_permissions(manage_messages=True)
