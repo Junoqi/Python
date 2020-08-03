@@ -1,19 +1,5 @@
 import discord
 from discord.ext import commands
-import r6sapi as api
-import asyncio
-import random
-import tweepy as tw
-import time
-import googletrans
-from googletrans import Translator
-from discord.utils import get
-from discord.ext.tasks import loop
-import requests
-import json
-import urllib3
-from urllib.request import urlopen
-import sys
 
 #discord
 token = 'NzA2NjU0Nzk1ODg4NTkwOTE5.Xq9byQ.Sin8jFT1gNq1oeNMSvGHRoE1D3o'
@@ -138,8 +124,63 @@ async def sleep(ctx):
     await ctx.send('Noodle Bot will be logging off for the night. See you in the morning! :)')
     exit()
 
+@client.command()
+async def spam(ctx,*,message):
 
-#8 ballc
+    await ctx.send('Spam has been initiated on ' + message.upper())
+
+    if message.lower() == 'ryan':
+        id = '<@430451874773073960>'
+        for x in range(10):
+
+            await ctx.send(id + ' it appears you are late')
+
+    elif message.lower() == 'viper':
+        id = '<@509473152997261330>'
+
+        for x in range(10):
+
+            await ctx.send(id + ' it appears you are late')
+
+    if message.lower() == 'henry':
+        id = '<@477961589178499094>'
+
+        for x in range(10):
+
+            await ctx.send(id + ' it appears you are late')
+
+    
+    elif message.lower() == 'variable':
+        id = '<@414179453158293506>'
+
+        for x in range(10):
+
+            await ctx.send(id + ' it appears you are late')
+
+    elif message.lower() == 'smeagol':
+        id = '<@321370792682192896>'
+
+        for x in range(10):
+
+            await ctx.send(id + ' it appears you are late')
+    
+    elif message.lower() == 'everyone':
+        id = '<@321370792682192896>'
+        id1 = '<@477961589178499094>'
+        id2 = '<@430451874773073960>'
+        id3 = '<@509473152997261330>'
+        id4 = '<@414179453158293506>'
+
+        for x in range(10):
+
+            await ctx.send(id + ' it appears you are late')
+            await ctx.send(id1 + ' it appears you are late')
+            await ctx.send(id2+ ' it appears you are late')
+            await ctx.send(id3 + ' it appears you are late')
+            await ctx.send(id4 + ' it appears you are late')
+
+    
+#8 ball
 @client.command()
 async def ball(ctx,*,message):
     responses = ['As I see it, yes.',
