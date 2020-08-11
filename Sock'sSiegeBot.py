@@ -29,7 +29,7 @@ async def kd(ctx,*,username):
     await ctx.send('Finding K/D for ' + username + '...')
   
     try:
-        auth = api.Auth("spyhenry99@gmail.com", "katobear")
+        auth = api.Auth("", "")
         player = await auth.get_player(username, api.Platforms.UPLAY)
         operator = await player.check_general()
         await ctx.send(str(username) + 's K/D is: ' + str((round(player.kills / player.deaths, 2))))
