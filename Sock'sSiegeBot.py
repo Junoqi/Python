@@ -4,7 +4,7 @@ import r6sapi as api
 import asyncio
 
 #discord
-token = 'NzI3ODkxMjg2MTQ4OTA3MDk5.XvyenQ.99wStEe60wvQzRwsDA1cFiApEgo'
+token = ''
 client = commands.Bot(command_prefix = '.') 
 client.remove_command('help')
 
