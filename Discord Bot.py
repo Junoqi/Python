@@ -1,5 +1,12 @@
 import discord
 from discord.ext import commands
+import asyncio
+import random
+import time
+import googletrans
+from googletrans import Translator
+
+
 
 #discord
 token = ''
@@ -19,7 +26,6 @@ async def on_ready():
 async def on_message(message):  
     print(f"{message.channel}: {message.author.name}: {message.content}")
     await client.process_commands(message)
-
 
 #roaster
 @client.event
@@ -44,7 +50,6 @@ async def censor(ctx,*,amount):
             await ctx.send(ctx.message.author + ' censored ' + amount + ' messages because they were sus.') 
         print(str(ctx.message.author) + ' cleared ' + str(amount) + ' messages from ' + str(ctx.message.channel) + ' text chat.')
         print('=======')
-
 
 
 #translate
@@ -93,7 +98,7 @@ async def gun(ctx):
     SecGuns = ['Classic', 'Shorty', 'Frenzy', 'Ghost', 'Sheriff']
 
     await ctx.send('Primary: ' + random.choice(PrimGuns))
-    await ctx.send('Secondary: ' + random.choice(SecGuns))    
+    await ctx.send('Secondary: ' + random.choice(SecGuns))
     
 #clear messages
 @client.command()
@@ -113,9 +118,6 @@ async def help(ctx):
     )
 
     embed.set_author(name='Help')
-    embed.add_field(name='!kd', value='!kd + UPlay Username prints out the users K/D', inline=False)
-    embed.add_field(name='!kills', value='!kills + UPlay Username prints out the users total kills', inline=False)
-    embed.add_field(name='!rank', value='!rank + UPlay Username prints out the users current Rank and MMR', inline=False)
     embed.add_field(name='!ball', value='!ball + a question returns a magic 8 ball response', inline=False)
     embed.add_field(name='!dinner', value='It just returns when @Junoqi will eat dinner', inline=False)
     embed.add_field(name='!translate', value='It translates your message to spanish very hastily', inline=False)
@@ -133,28 +135,30 @@ async def sleep(ctx):
     await ctx.send('Noodle Bot will be logging off for the night. See you in the morning! :)')
     exit()
 
+#spam
 @client.command()
-async def spam(ctx,*,message):
+@commands.cooldown(2, 60, commands.BucketType.user)
 
+async def spam(ctx,*,message):
     await ctx.send('Spam has been initiated on ' + message.upper())
 
     if message.lower() == 'ryan':
         id = '<@430451874773073960>'
-        for x in range(10):
+        for x in range(5):
 
             await ctx.send(id + ' it appears you are late')
 
     elif message.lower() == 'viper':
         id = '<@509473152997261330>'
 
-        for x in range(10):
+        for x in range(5):
 
             await ctx.send(id + ' it appears you are late')
 
     if message.lower() == 'henry':
         id = '<@477961589178499094>'
 
-        for x in range(10):
+        for x in range(5):
 
             await ctx.send(id + ' it appears you are late')
 
@@ -162,14 +166,14 @@ async def spam(ctx,*,message):
     elif message.lower() == 'variable':
         id = '<@414179453158293506>'
 
-        for x in range(10):
+        for x in range(5):
 
             await ctx.send(id + ' it appears you are late')
 
     elif message.lower() == 'smeagol':
         id = '<@321370792682192896>'
 
-        for x in range(10):
+        for x in range(5):
 
             await ctx.send(id + ' it appears you are late')
     
@@ -188,8 +192,11 @@ async def spam(ctx,*,message):
             await ctx.send(id3 + ' it appears you are late')
             await ctx.send(id4 + ' it appears you are late')
 
+
     
-#8 ball
+
+
+#8 ballc
 @client.command()
 async def ball(ctx,*,message):
     responses = ['As I see it, yes.',
@@ -220,5 +227,5 @@ async def ball(ctx,*,message):
     print(str(ctx.message.author) + ' asked the Magic 8 ball: ' + str(message))
     print('=======')
 
-#run 
 client.run(token)
+
