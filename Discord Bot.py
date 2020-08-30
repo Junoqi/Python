@@ -9,7 +9,7 @@ from googletrans import Translator
 
 
 #discord
-token = ''
+token = 'NzA2NjU0Nzk1ODg4NTkwOTE5.Xq9ZkA.kioV4KTl2dTcZU5g2LySkTo3OJo'
 client = commands.Bot(command_prefix = '!') 
 client.remove_command('help')
 
@@ -42,36 +42,23 @@ async def on_command_error(ctx, error):
 
 #censor
 @client.command()
+@commands.cooldown(1, 30, commands.BucketType.user)
 async def censor(ctx,*,amount):
-        await ctx.channel.purge(limit=int(amount))
-        if amount == '1':
-            await ctx.send(ctx.message.author + ' censored ' + amount + ' message because it was sus.')
+        if(int(amount) > 10):
+            await ctx.send("The clear command can only clear up to 10 messages.")
         else:
-            await ctx.send(ctx.message.author + ' censored ' + amount + ' messages because they were sus.') 
-        print(str(ctx.message.author) + ' cleared ' + str(amount) + ' messages from ' + str(ctx.message.channel) + ' text chat.')
-        print('=======')
-
-
-#translate
-@client.command()
-async def translate(ctx,*,message):
-    text=str(message)
-    translator = Translator()
-
-    result = translator.translate(text, dest='es')
-
-    await ctx.send(result.text)
-    print(str(ctx.message.author) + ' translated ' + message + ' to ' + result.text)
-    print('=======')
+            await ctx.channel.purge(limit=int(amount) + 1)
 
 #choir
 @client.command()
 async def choir(ctx):
+    await ctx.channel.purge(limit=1)
     await ctx.send(str(ctx.message.author) + ' has summoned the choir.')
     await ctx.send(':-0')
     await ctx.send(':-o')
     await ctx.send(':-0')
     await ctx.send(':-o')
+    await ctx.send(':-0')
 
     print(ctx.message.author.name + ' has summoned the choir')
 
@@ -131,14 +118,17 @@ async def help(ctx):
 
 #developer tools
 @client.command()
-async def sleep(ctx):
-    await ctx.send('Noodle Bot will be logging off for the night. See you in the morning! :)')
-    exit()
+async def sleep(ctx, *, message):
+    if(ctx.message.author.name == 'Junoqi'):
+        await ctx.send('Noodle Bot will be logging off for the night. See you in the morning! :)')
+        exit()
+    
+    else:
+        await ctx.send('You do not have permissions to excecute this command')
 
 #spam
 @client.command()
 @commands.cooldown(2, 60, commands.BucketType.user)
-
 async def spam(ctx,*,message):
     await ctx.send('Spam has been initiated on ' + message.upper())
 
@@ -184,7 +174,7 @@ async def spam(ctx,*,message):
         id3 = '<@509473152997261330>'
         id4 = '<@414179453158293506>'
 
-        for x in range(10):
+        for x in range(5):
 
             await ctx.send(id + ' it appears you are late')
             await ctx.send(id1 + ' it appears you are late')
