@@ -9,7 +9,7 @@ from googletrans import Translator
 
 
 #discord
-token = ''
+token = 'NzA2NjU0Nzk1ODg4NTkwOTE5.Xq9ZkA.kioV4KTl2dTcZU5g2LySkTo3OJo'
 client = commands.Bot(command_prefix = '!') 
 client.remove_command('help')
 
@@ -70,13 +70,6 @@ async def ping(ctx):
     print(str(ctx.message.author) + ' tested the bots latency. It is: ' + str(round(client.latency * 1000)) + ' ms')
     print('=======')
 
-#dinner command
-@client.command()
-async def dinner(ctx):
-    dinnerTimes = ['8:30', '9:00', '10:45', '11:00', '12:00']
-    await ctx.send('Ricky will eat dinner at ' + random.choice(dinnerTimes) + ' tonight')
-    print(str(ctx.message.author) + ' found what time Ricky will eat dinner tonight.')
-    print('=======')
 
 @client.command()
 async def gun(ctx):
@@ -106,8 +99,6 @@ async def help(ctx):
 
     embed.set_author(name='Help')
     embed.add_field(name='!ball', value='!ball + a question returns a magic 8 ball response', inline=False)
-    embed.add_field(name='!dinner', value='It just returns when @Junoqi will eat dinner', inline=False)
-    embed.add_field(name='!translate', value='It translates your message to spanish very hastily', inline=False)
     embed.add_field(name='!censor', value='Use this command to delete any previous strange message', inline=False)
     embed.add_field(name='!ping', value='Returns the bot latency', inline=False)
     embed.add_field(name='!clear', value='!clear + amount Clears the selected amount of messages (ONLY AVAILABLE TO ADMINS)', inline=False)
@@ -127,60 +118,60 @@ async def sleep(ctx, *, message):
         await ctx.send('You do not have permissions to excecute this command')
 
 #spam
-@client.command()
-@commands.cooldown(2, 60, commands.BucketType.user)
-async def spam(ctx,*,message):
-    await ctx.send('Spam has been initiated on ' + message.upper())
+# @client.command()
+# @commands.cooldown(2, 60, commands.BucketType.user)
+# async def spam(ctx,*,message):
+#     await ctx.send('Spam has been initiated on ' + message.upper())
 
-    if message.lower() == 'ryan':
-        id = '<@430451874773073960>'
-        for x in range(5):
+#     if message.lower() == 'ryan':
+#         id = '<@430451874773073960>'
+#         for x in range(5):
 
-            await ctx.send(id + ' it appears you are late')
+#             await ctx.send(id + ' it appears you are late')
 
-    elif message.lower() == 'viper':
-        id = '<@509473152997261330>'
+#     elif message.lower() == 'viper':
+#         id = '<@509473152997261330>'
 
-        for x in range(5):
+#         for x in range(5):
 
-            await ctx.send(id + ' it appears you are late')
+#             await ctx.send(id + ' it appears you are late')
 
-    if message.lower() == 'henry':
-        id = '<@477961589178499094>'
+#     if message.lower() == 'henry':
+#         id = '<@477961589178499094>'
 
-        for x in range(5):
+#         for x in range(5):
 
-            await ctx.send(id + ' it appears you are late')
+#             await ctx.send(id + ' it appears you are late')
 
     
-    elif message.lower() == 'variable':
-        id = '<@414179453158293506>'
+#     elif message.lower() == 'variable':
+#         id = '<@414179453158293506>'
 
-        for x in range(5):
+#         for x in range(5):
 
-            await ctx.send(id + ' it appears you are late')
+#             await ctx.send(id + ' it appears you are late')
 
-    elif message.lower() == 'smeagol':
-        id = '<@321370792682192896>'
+#     elif message.lower() == 'smeagol':
+#         id = '<@321370792682192896>'
 
-        for x in range(5):
+#         for x in range(5):
 
-            await ctx.send(id + ' it appears you are late')
+#             await ctx.send(id + ' it appears you are late')
     
-    elif message.lower() == 'everyone':
-        id = '<@321370792682192896>'
-        id1 = '<@477961589178499094>'
-        id2 = '<@430451874773073960>'
-        id3 = '<@509473152997261330>'
-        id4 = '<@414179453158293506>'
+#     elif message.lower() == 'everyone':
+#         id = '<@321370792682192896>'
+#         id1 = '<@477961589178499094>'
+#         id2 = '<@430451874773073960>'
+#         id3 = '<@509473152997261330>'
+#         id4 = '<@414179453158293506>'
 
-        for x in range(5):
+#         for x in range(5):
 
-            await ctx.send(id + ' it appears you are late')
-            await ctx.send(id1 + ' it appears you are late')
-            await ctx.send(id2+ ' it appears you are late')
-            await ctx.send(id3 + ' it appears you are late')
-            await ctx.send(id4 + ' it appears you are late')
+#             await ctx.send(id + ' it appears you are late')
+#             await ctx.send(id1 + ' it appears you are late')
+#             await ctx.send(id2+ ' it appears you are late')
+#             await ctx.send(id3 + ' it appears you are late')
+#             await ctx.send(id4 + ' it appears you are late')
 
 
     
