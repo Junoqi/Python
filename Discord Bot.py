@@ -23,6 +23,61 @@ async def on_ready():
     print('==============')
 
 @client.event
+async def on_member_join(ctx):
+    await ctx.send("Hey! Welcome to the Noodle Gang server :) Please use  the !Role command + (minecraft overwatch valorant minecraft destiny2 siege) in the roles channel so that we can identify what games you play!")
+
+
+#autorole
+@client.command()
+async def role(ctx,*,message):
+    if(message.lower() == 'valorant'):
+
+        member = ctx.message.author
+
+        role = discord.utils.get(member.guild.roles, name='valorant')
+        await member.add_roles(role)
+        await ctx.send("Valorant Role Added :)")
+
+    elif(message.lower() == 'siege'):
+
+        member = ctx.message.author
+
+        role = discord.utils.get(member.guild.roles, name='siege')
+        await member.add_roles(role)
+        await ctx.send("Siege Role added :)")
+    
+    elif(message.lower() == 'destiny2'):
+
+        member = ctx.message.author
+
+        role = discord.utils.get(member.guild.roles, name='destiny2')
+        await member.add_roles(role)
+        await ctx.send("Destiny 2 Role added :)")
+
+    elif(message.lower() == 'minecraft'):
+
+        member = ctx.message.author
+
+        role = discord.utils.get(member.guild.roles, name='minecraft')
+        await member.add_roles(role)
+        await ctx.send("Minecraft Role added :)")
+    
+    elif(message.lower() == 'overwatch'):
+
+        member = ctx.message.author
+
+        role = discord.utils.get(member.guild.roles, name='overwatch')
+        await member.add_roles(role)
+        await ctx.send("Ovrewatch Role added :)")
+
+    elif(message.lower() == 'noodle mod'):
+        await ctx.send("Please contact and Admin if you would like to become an administrator or moderator")
+    
+    else:
+        await ctx.send('''Sorry :( That isn't a game this server supports right now. Contact an administrator  if you want to add that to the list of roles.''')
+
+
+@client.event
 async def on_message(message):  
     print(f"{message.channel}: {message.author.name}: {message.content}")
     await client.process_commands(message)
