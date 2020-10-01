@@ -9,7 +9,6 @@ from googletrans import Translator
 
 
 #discord
-token = 'NzA2NjU0Nzk1ODg4NTkwOTE5.Xq9ZkA.kioV4KTl2dTcZU5g2LySkTo3OJo'
 client = commands.Bot(command_prefix = '!') 
 client.remove_command('help')
 
