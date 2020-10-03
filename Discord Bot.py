@@ -3,12 +3,9 @@ from discord.ext import commands
 import asyncio
 import random
 import time
-import googletrans
-from googletrans import Translator
-
-
 
 #discord
+token = 'NzA2NjU0Nzk1ODg4NTkwOTE5.Xq9ZkA.kioV4KTl2dTcZU5g2LySkTo3OJo'
 client = commands.Bot(command_prefix = '!') 
 client.remove_command('help')
 
@@ -25,6 +22,8 @@ async def on_ready():
 async def on_member_join(ctx):
     await ctx.send("Hey! Welcome to the Noodle Gang server :) Please use  the !Role command + (minecraft overwatch valorant minecraft destiny2 siege) in the roles channel so that we can identify what games you play!")
 
+    role = discord.utils.get(member.guild.roles, name='noodle')
+    await member.add_roles(role)
 
 #autorole
 @client.command()
@@ -67,7 +66,23 @@ async def role(ctx,*,message):
 
         role = discord.utils.get(member.guild.roles, name='overwatch')
         await member.add_roles(role)
-        await ctx.send("Ovrewatch Role added :)")
+        await ctx.send("Overwatch Role added :)")
+    
+    elif(message.lower() == 'big boi'):
+
+        member = ctx.message.author
+
+        role = discord.utils.get(member.guild.roles, name='big boi')
+        await member.add_roles(role)
+        await ctx.send("Big boi role added :) (Warning! This is an NSFW role!)")   
+        
+    elif(message.lower() == 'halo'):
+
+        member = ctx.message.author
+
+        role = discord.utils.get(member.guild.roles, name='halo')
+        await member.add_roles(role)
+        await ctx.send("Halo Role added :)") 
 
     elif(message.lower() == 'noodle mod'):
         await ctx.send("Please contact and Admin if you would like to become an administrator or moderator")
