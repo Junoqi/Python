@@ -5,7 +5,7 @@ import random
 import time
 
 #discord
-token = 'NzA2NjU0Nzk1ODg4NTkwOTE5.Xq9ZkA.kioV4KTl2dTcZU5g2LySkTo3OJo'
+token = 'NzA2NjU0Nzk1ODg4NTkwOTE5.Xq9ZkA.alaB6mx10CC6kPhxK_cK2GXOw2w'
 client = commands.Bot(command_prefix = '!') 
 client.remove_command('help')
 
@@ -91,23 +91,101 @@ async def role(ctx,*,message):
         await ctx.send('''Sorry :( That isn't a game this server supports right now. Contact an administrator  if you want to add that to the list of roles.''')
 
 
+@client.command()
+async def removerole(ctx,*,message):
+    if(message.lower() == 'valorant'):
+
+        member = ctx.message.author
+
+        role = discord.utils.get(member.guild.roles, name='valorant')
+        await member.remove_roles(role)
+        await ctx.send("Valorant Role removed :(")
+
+    elif(message.lower() == 'siege'):
+
+        member = ctx.message.author
+
+        role = discord.utils.get(member.guild.roles, name='siege')
+        await member.remove_roles(role)
+        await ctx.send("Siege Role removed :(")
+    
+    elif(message.lower() == 'destiny2'):
+
+        member = ctx.message.author
+
+        role = discord.utils.get(member.guild.roles, name='destiny2')
+        await member.remove_roles(role)
+        await ctx.send("Destiny 2 Role removed :(")
+
+    elif(message.lower() == 'minecraft'):
+
+        member = ctx.message.author
+
+        role = discord.utils.get(member.guild.roles, name='minecraft')
+        await member.remove_roles(role)
+        await ctx.send("Minecraft Role removed :(")
+    
+    elif(message.lower() == 'overwatch'):
+
+        member = ctx.message.author
+
+        role = discord.utils.get(member.guild.roles, name='overwatch')
+        await member.remove_roles(role)
+        await ctx.send("Overwatch Role removed :(")
+    
+    elif(message.lower() == 'big boi'):
+
+        member = ctx.message.author
+
+        role = discord.utils.get(member.guild.roles, name='big boi')
+        await member.remove_roles(role)
+        await ctx.send("Big boi role removed :(")   
+        
+    elif(message.lower() == 'halo'):
+
+        member = ctx.message.author
+
+        role = discord.utils.get(member.guild.roles, name='halo')
+        await member.remove_roles(role)
+        await ctx.send("Halo Role removed :(") 
+
+    elif(message.lower() == 'all'):
+
+        member = ctx.message.author
+
+        role = discord.utils.get(member.guild.roles, name='halo')
+        role1 = discord.utils.get(member.guild.roles, name='siege')
+        role2 = discord.utils.get(member.guild.roles, name='destiny2')
+        role3 = discord.utils.get(member.guild.roles, name='minecraft')
+        role4 = discord.utils.get(member.guild.roles, name='overwatch')
+        role5 = discord.utils.get(member.guild.roles, name='big boi')
+
+        await member.remove_roles(role)
+        await member.remove_roles(role1)
+        await member.remove_roles(role2)
+        await member.remove_roles(role3)
+        await member.remove_roles(role4)
+        await member.remove_roles(role5)
+
+        await ctx.send("All roles removed :(") 
+
 @client.event
 async def on_message(message):  
     print(f"{message.channel}: {message.author.name}: {message.content}")
     await client.process_commands(message)
 
 #roaster
-@client.event
-async def on_command_error(ctx, error):
+#@client.event
+# async def on_command_error(ctx, error):
 
-    if isinstance(error, commands.CommandNotFound):
+#     if isinstance(error, commands.CommandNotFound):
 
-        roasts = ['Imagine being a dummy', 'Imagine not reading the !help page', 'lol what a bot. I bet my code has more brain than u.', 'Nice try stupid. Next time try harder.', 'Yooo we got a dumb one here guys.', 'Haha i bet noodle is smarter than u.']
+#         roasts = ['Imagine being a dummy', 'Imagine not reading the !help page', 'lol what a bot. I bet my code has more brain than u.', 'Nice try stupid. Next time try harder.', 'Yooo we got a dumb one here guys.', 'Haha i bet noodle is smarter than u.']
 
-        await ctx.send('Shout out to ' + ctx.message.author.mention + ' for getting the command wrong.')
-        await ctx.send(random.choice(roasts))
+#         await ctx.send('Shout out to ' + ctx.message.author.mention + ' for getting the command wrong.')
+#         await ctx.send(random.choice(roasts))
 
-        print(str(ctx.message.author) + ' Used this: ' + str(ctx.message.content) + ' Instead of the correct command.')
+#         print(str(ctx.message.author) + ' Used this: ' + str(ctx.message.content) + ' Instead of the correct command.')
 
 #censor
 @client.command()
