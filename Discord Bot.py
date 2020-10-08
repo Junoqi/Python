@@ -5,7 +5,7 @@ import random
 import time
 
 #discord
-token = 'NzA2NjU0Nzk1ODg4NTkwOTE5.Xq9ZkA.alaB6mx10CC6kPhxK_cK2GXOw2w'
+token = ''
 client = commands.Bot(command_prefix = '!') 
 client.remove_command('help')
 
@@ -190,6 +190,7 @@ async def on_message(message):
 #censor
 @client.command()
 @commands.cooldown(1, 30, commands.BucketType.user)
+@commands.has_permissions(manage_messages=True)
 async def censor(ctx,*,amount):
         if(int(amount) > 10):
             await ctx.send("The clear command can only clear up to 10 messages.")
@@ -356,4 +357,6 @@ async def ball(ctx,*,message):
     print('=======')
 
 client.run(token)
+
+
 
