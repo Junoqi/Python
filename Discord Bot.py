@@ -19,7 +19,7 @@ async def on_ready():
     print('==============')
 
 @client.event
-async def on_member_join(ctx):
+async def on_member_join(ctx,*):
     await ctx.send("Hey! Welcome to the Noodle Gang server :) Please use  the !Role command + (minecraft overwatch valorant minecraft destiny2 siege) in the roles channel so that we can identify what games you play!")
 
     role = discord.utils.get(member.guild.roles, name='noodle')
@@ -192,11 +192,13 @@ async def on_message(message):
 @commands.cooldown(1, 30, commands.BucketType.user)
 @commands.has_permissions(manage_messages=True)
 async def censor(ctx,*,amount):
+    try:
         if(int(amount) > 10):
             await ctx.send("The clear command can only clear up to 10 messages.")
         else:
             await ctx.channel.purge(limit=int(amount) + 1)
-
+    except:
+        await ctx.send("Sorry you dont have permission to use this command")
 #choir
 @client.command()
 async def choir(ctx):
@@ -357,6 +359,4 @@ async def ball(ctx,*,message):
     print('=======')
 
 client.run(token)
-
-
 
