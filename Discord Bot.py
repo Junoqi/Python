@@ -24,6 +24,10 @@ async def on_member_join(member):
 
     role = discord.utils.get(member.guild.roles, name='noodle')
     await member.add_roles(role)
+    
+@client.event
+async def on_member_join(ctx):
+    await ctx.send("Hey! Welcome to the Noodle Gang server :) Please use  the !Role command + (minecraft overwatch valorant minecraft destiny2 siege) in the roles channel so that we can identify what games you play!")
 
 #autorole
 @client.command()
