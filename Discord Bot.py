@@ -1,11 +1,12 @@
 import discord
 from discord.ext import commands
 import asyncio
+import json 
 import random
 import time
 
 #discord
-token = ''
+token = 'NzA2NjU0Nzk1ODg4NTkwOTE5.Xq9ZkA.SWV535Bcl7N5DSeI1j-JEX_Ar-U'
 client = commands.Bot(command_prefix = '!') 
 client.remove_command('help')
 
@@ -20,6 +21,16 @@ async def on_ready():
 
 
 @client.event
+async def on_message(message):  
+    print(f"{message.channel}: {message.author.name}: {message.content}")
+    await client.process_commands(message)
+
+    await AddMoney(message.author)
+    await open_account(message.author)
+    
+
+    
+@client.event
 async def on_member_join(member):
     for channel in member.guild.channels:
         if str(channel) == "roles":
@@ -27,6 +38,75 @@ async def on_member_join(member):
     
     role = discord.utils.get(member.guild.roles, name='noodle')
     await member.add_roles(role)
+
+@client.command()
+async def balance(ctx):
+    with open("users.json", "r") as f:
+        users = json.load(f)
+
+    await open_account(ctx.author)
+
+    user = ctx.author
+
+    wallet_amt = users[str(user.id)]["wallet"]
+
+    await ctx.send(f"{user.mention} has {wallet_amt} noodles!")
+
+@client.command()
+@commands.cooldown(1, 3600, commands.BucketType.user)
+async def beg(ctx):
+
+    with open("users.json", "r") as f:
+        users = json.load(f)
+
+    user = ctx.author
+
+    await open_account(ctx.author)
+
+        
+    earnings = random.randrange(10)
+
+    users[str(user.id)]["wallet"] += earnings
+    users[str(user.id)]["wallet"] -= 10
+
+    await ctx.send(f"Noodle god gave you {earnings} noodles!")
+
+    with open('users.json', 'w') as outfile:
+        json.dump(users, outfile)
+
+# async def BankCreated(channel):
+#     await channel.send(f"Account has been created :)")
+
+async def AddMoney(user):
+    with open("users.json", "r") as f:
+        users = json.load(f)
+
+    await open_account(user)
+
+    users[str(user.id)]["wallet"] += 10
+
+    with open('users.json', 'w') as outfile:
+        json.dump(users, outfile)
+
+
+async def open_account(user):
+
+    with open("users.json", "r") as f:
+        users = json.load(f)
+
+    if str(user.id) in users:
+        return False
+    else:
+        users[str(user.id)] = {}
+        users[str(user.id)]["wallet"] = 0
+        # await BankCreated(user)
+
+    with open("users.json", "w") as f:
+        users = json.dump(users,f)
+
+async def get_bank_data():
+    with open("users.json", "r") as f:
+        users = json.load(f)
 
 #autorole
 @client.command()
@@ -172,23 +252,30 @@ async def removerole(ctx,*,message):
 
         await ctx.send("All roles removed :(") 
 
-@client.event
-async def on_message(message):  
-    print(f"{message.channel}: {message.author.name}: {message.content}")
-    await client.process_commands(message)
+
+
+
 
 #roaster
-#@client.event
-# async def on_command_error(ctx, error):
+@client.event
+async def on_command_error(ctx, error):
 
-#     if isinstance(error, commands.CommandNotFound):
+    if isinstance(error, commands.CommandNotFound):
 
-#         roasts = ['Imagine being a dummy', 'Imagine not reading the !help page', 'lol what a bot. I bet my code has more brain than u.', 'Nice try stupid. Next time try harder.', 'Yooo we got a dumb one here guys.', 'Haha i bet noodle is smarter than u.']
+        roasts = ['Imagine being a dummy', 'Imagine not reading the !help page', 'lol what a bot. I bet my code has more brain than u.', 'Nice try stupid. Next time try harder.', 'Yooo we got a dumb one here guys.', 'Haha i bet noodle is smarter than u.']
 
-#         await ctx.send('Shout out to ' + ctx.message.author.mention + ' for getting the command wrong.')
-#         await ctx.send(random.choice(roasts))
+        await ctx.send('Shout out to ' + ctx.message.author.mention + ' for getting the command wrong.')
+        await ctx.send(random.choice(roasts))
 
-#         print(str(ctx.message.author) + ' Used this: ' + str(ctx.message.content) + ' Instead of the correct command.')
+         
+        
+        print(str(ctx.message.author) + ' Used this: ' + str(ctx.message.content) + ' Instead of the correct command.')
+    if isinstance(error, discord.ext.commands.errors.CommandOnCooldown):
+        if error.retry_after > 60:
+            minutes = int(error.retry_after) / 60
+            await ctx.send("Sorry, that command is on cooldown for {:.0f} more minutes.".format(minutes))
+        else:
+            await ctx.send("Sorry, that command is on cooldown for {:.0f} more seconds.").format(error.retry_after)
 
 #censor
 @client.command()
@@ -363,3 +450,4 @@ async def ball(ctx,*,message):
 
 client.run(token)
 
+input("Enter to go bye bye")
