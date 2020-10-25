@@ -33,6 +33,8 @@ async def on_message(message):
         return False
     elif '!send' in message.content:
         return False
+    elif '!leaderboard' in message.content:
+        return False
     else:
         await AddMoney(message.author, 1)
     
