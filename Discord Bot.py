@@ -6,7 +6,7 @@ import random
 import time
 
 #discord
-token = ''
+token = 'NzA2NjU0Nzk1ODg4NTkwOTE5.Xq9ZkA.6OORcLdMka9VmEgmZtUYTb60DI4'
 client = commands.Bot(command_prefix = '!') 
 client.remove_command('help')
 
@@ -23,10 +23,16 @@ async def on_ready():
 @client.event
 async def on_message(message):  
     print(f"{message.channel}: {message.author.name}: {message.content}")
-    await client.process_commands(message)
+    await client.process_commands(message) 
 
-    await AddMoney(message.author)
     await open_account(message.author)
+
+    if message.content == '!beg':
+        return False
+    elif message.content == '!balance':
+        return False
+    else:
+        await AddMoney(message.author, 1)
     
 
     
@@ -67,7 +73,6 @@ async def beg(ctx):
     earnings = random.randrange(10)
 
     users[str(user.id)]["wallet"] += earnings
-    users[str(user.id)]["wallet"] -= 10
 
     await ctx.send(f"Noodle god gave you {earnings} noodles!")
 
@@ -77,16 +82,28 @@ async def beg(ctx):
 # async def BankCreated(channel):
 #     await channel.send(f"Account has been created :)")
 
-async def AddMoney(user):
+async def AddMoney(user, amount):
     with open("users.json", "r") as f:
         users = json.load(f)
 
     await open_account(user)
 
-    users[str(user.id)]["wallet"] += 10
+    users[str(user.id)]["wallet"] += amount
 
     with open('users.json', 'w') as outfile:
         json.dump(users, outfile)
+
+async def SubMoney(user, amount):
+    with open("users.json", "r") as f:
+        users = json.load(f)
+
+    await open_account(user)
+
+    users[str(user.id)]["wallet"] - amount
+
+    with open('users.json', 'w') as outfile:
+        json.dump(users, outfile)
+
 
 
 async def open_account(user):
@@ -331,7 +348,7 @@ async def clear(ctx,*,amount):
 #help embed
 @client.command()
 async def help(ctx):
-    author = ctx.message.author
+    author = ctx.message.author.mention
 
     embed = discord.Embed(
         colour = discord.Color.orange()
@@ -449,5 +466,3 @@ async def ball(ctx,*,message):
     print('=======')
 
 client.run(token)
-
-input("Enter to go bye bye")
