@@ -6,7 +6,7 @@ import random
 import time
 
 #discord
-token = 'NzA2NjU0Nzk1ODg4NTkwOTE5.Xq9ZkA.SWV535Bcl7N5DSeI1j-JEX_Ar-U'
+token = ''
 client = commands.Bot(command_prefix = '!') 
 client.remove_command('help')
 
