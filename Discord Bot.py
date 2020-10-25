@@ -6,7 +6,7 @@ import random
 import time
 
 #discord
-token = 'NzA2NjU0Nzk1ODg4NTkwOTE5.Xq9ZkA.6OORcLdMka9VmEgmZtUYTb60DI4'
+token = ''
 client = commands.Bot(command_prefix = '!') 
 client.remove_command('help')
 
@@ -30,6 +30,8 @@ async def on_message(message):
     if message.content == '!beg':
         return False
     elif message.content == '!balance':
+        return False
+    elif '!send' in message.content:
         return False
     else:
         await AddMoney(message.author, 1)
@@ -75,12 +77,153 @@ async def beg(ctx):
     users[str(user.id)]["wallet"] += earnings
 
     await ctx.send(f"Noodle god gave you {earnings} noodles!")
-
+ 
     with open('users.json', 'w') as outfile:
         json.dump(users, outfile)
 
 # async def BankCreated(channel):
 #     await channel.send(f"Account has been created :)")
+
+@client.command()
+async def withdraw(ctx,amount = None):
+
+    with open("users.json", "r") as f:
+        users = json.load(f)
+
+    await open_account(ctx.author)
+
+    if amount == None:
+        await ctx.send("Please enter the amount")
+        return
+
+    wallet_amt = users[str(ctx.author.id)]["wallet"]
+
+
+    amount = int(amount)
+    if amount>wallet_amt:
+        await ctx.send("You dont have sufficient funds!")
+        return
+    elif amount<0:
+        await ctx.send("Amount must be positive")
+        return
+    
+    await update_bank(ctx.author,-1*amount)
+
+    await ctx.send(f"You withdrew {amount} noodles")
+
+@client.command()
+async def gamble(ctx,amount = None):
+
+    with open("users.json", "r") as f:
+        users = json.load(f)
+
+    await open_account(ctx.author)
+
+    if amount == None:
+        await ctx.send("Please enter the amount")
+        return
+
+    wallet_amt = users[str(ctx.author.id)]["wallet"]
+
+    amount = int(amount)
+    if amount>wallet_amt:
+        await ctx.send("You dont have sufficient funds!")
+        return
+    if amount<=wallet_amt and amount == 69:
+        await update_bank(ctx.author, amount)
+        await ctx.send("Hehehe...")
+        return
+    elif amount<0:
+        await ctx.send("Amount must be positive")
+        return
+    
+    final_list = []
+    for i in range(3):
+        choices = random.choice(["💩","👩","👨"])
+
+        final_list.append(choices)
+
+    await ctx.send(str("{" + final_list[0] + final_list[1] + final_list[2]) + "}")
+
+    if final_list[0] == final_list[1] and final_list[0] == final_list[1] and final_list[0] == final_list[2]:
+        await update_bank(ctx.author,amount)
+        await ctx.send("You won!")
+    else:
+        await update_bank(ctx.author,-1*amount)
+        await ctx.send("You lost!")
+
+@client.command()
+async def leaderboard(ctx, x = 5):
+    with open("users.json", "r") as f:
+        users = json.load(f)
+    
+    if x > len(users):
+        await ctx.send("There aren't that many member accounts! Try again!")
+        return
+
+
+    leader_board = {}
+    total = []
+    for user in users:
+        name = int(user)
+        total_amount = users[user]["wallet"]
+        leader_board[total_amount] = name 
+        total.append(total_amount)
+
+    total = sorted(total,reverse=True)
+
+    em = discord.Embed(title = f"Top {x} Richest Server Members")
+    index = 1
+    for amt in total:
+        id_ = leader_board[amt]
+        member = client.get_user(id_)
+        name = member.name
+        em.add_field(name = f"{index}. {name}", value = f"{amt}", inline = False)
+        if index == x:
+            break
+        else:
+            index += 1
+
+    await ctx.send(embed = em)     
+
+@client.command()
+async def send(ctx,member:discord.Member,amount = None):
+
+    with open("users.json", "r") as f:
+        users = json.load(f)
+
+    await open_account(ctx.author)
+    await open_account(member)
+    
+    if amount == None:
+        await ctx.send("Please enter the amount")
+        return
+
+    wallet_amt = users[str(ctx.author.id)]["wallet"]
+
+
+    amount = int(amount)
+    if amount>wallet_amt:
+        await ctx.send("You dont have sufficient funds!")
+        return
+    elif amount<0:
+        await ctx.send("Amount must be positive")
+        return
+    
+    await update_bank(ctx.author,-1*amount)
+    await update_bank(member,amount)
+
+    await ctx.send(f"{ctx.author.mention} gave {member.mention} {amount} noodles")
+
+async def update_bank(user, change = 0):
+    with open("users.json", "r") as f:
+        users = json.load(f)
+
+    users[str(user.id)]["wallet"] += change
+
+    with open('users.json', 'w') as outfile:
+        json.dump(users, outfile)
+
 
 async def AddMoney(user, amount):
     with open("users.json", "r") as f:
@@ -274,27 +417,27 @@ async def removerole(ctx,*,message):
 
 
 #roaster
-@client.event
-async def on_command_error(ctx, error):
+# @client.event
+# async def on_command_error(ctx, error):
 
-    if isinstance(error, commands.CommandNotFound):
+#     if isinstance(error, commands.CommandNotFound):
 
-        roasts = ['Imagine being a dummy', 'Imagine not reading the !help page', 'lol what a bot. I bet my code has more brain than u.', 'Nice try stupid. Next time try harder.', 'Yooo we got a dumb one here guys.', 'Haha i bet noodle is smarter than u.']
+#         roasts = ['Imagine being a dummy', 'Imagine not reading the !help page', 'lol what a bot. I bet my code has more brain than u.', 'Nice try stupid. Next time try harder.', 'Yooo we got a dumb one here guys.', 'Haha i bet noodle is smarter than u.']
 
-        await ctx.send('Shout out to ' + ctx.message.author.mention + ' for getting the command wrong.')
-        await ctx.send(random.choice(roasts))
+#         await ctx.send('Shout out to ' + ctx.message.author.mention + ' for getting the command wrong.')
+#         await ctx.send(random.choice(roasts))
 
          
         
-        print(str(ctx.message.author) + ' Used this: ' + str(ctx.message.content) + ' Instead of the correct command.')
-    if isinstance(error, discord.ext.commands.errors.CommandOnCooldown):
-        if error.retry_after > 60:
-            minutes = int(error.retry_after) / 60
-            await ctx.send("Sorry, that command is on cooldown for {:.0f} more minutes.".format(minutes))
-        else:
-            await ctx.send("Sorry, that command is on cooldown for {:.0f} more seconds.").format(error.retry_after)
+#         print(str(ctx.message.author) + ' Used this: ' + str(ctx.message.content) + ' Instead of the correct command.')
+#     if isinstance(error, discord.ext.commands.errors.CommandOnCooldown):
+#         if error.retry_after > 60:
+#             minutes = int(error.retry_after) / 60
+#             await ctx.send("Sorry, that command is on cooldown for {:.0f} more minutes.".format(minutes))
+#         else:
+#             await ctx.send("Sorry, that command is on cooldown for {:.0f} more seconds.").format(error.retry_after)
 
-#censor
+# #censor
 @client.command()
 @commands.cooldown(1, 30, commands.BucketType.user)
 @commands.has_permissions(manage_messages=True)
@@ -466,3 +609,5 @@ async def ball(ctx,*,message):
     print('=======')
 
 client.run(token)
+
+input("Enter to go bye bye")
