@@ -6,7 +6,7 @@ import random
 import time
 
 #discord
-token = 'NzA2NjU0Nzk1ODg4NTkwOTE5.Xq9ZkA.hyK30Cc5gELcWeioi2oe6uqHDR4'
+token = ''
 client = commands.Bot(command_prefix = '!') 
 client.remove_command('help')
 
@@ -37,7 +37,7 @@ async def on_message(message):
         return False
     elif '!withdrawl' in message.content:
         return False
-    elif message.author.name == 'Noodle Bot':
+    elif message.author.name == 'Noodle bot':
         return False
     else:
         await AddMoney(message.author, 1)
@@ -507,8 +507,13 @@ async def help(ctx):
     embed.add_field(name='!censor', value='Use this command to delete any previous strange message', inline=False)
     embed.add_field(name='!ping', value='Returns the bot latency', inline=False)
     embed.add_field(name='!clear', value='!clear + amount Clears the selected amount of messages (ONLY AVAILABLE TO ADMINS)', inline=False)
+    embed.add_field(name='!balance', value='!balance + @User returns that users noodle count', inline=False)
+    embed.add_field(name='!leaderboard', value='!leaderboard + AMOUNT returns the top AMOUNT richest member of the server ', inline=False)
+    embed.add_field(name='!beg', value='The gods gift the user a random amount of noodles between 1-10. Can only be used once per hour.', inline=False)
+    embed.add_field(name='!send', value='!send + @User + AMOUNT sends @User AMOUNT noodles.', inline=False)
 
-    await ctx.send(author, embed=embed)
+
+    await ctx.send(embed=embed)
     print(str(ctx.message.author) + ' opened the !help page.')
     print('=======')
 
