@@ -6,7 +6,7 @@ import random
 import time
 
 #discord
-token = ''
+token = 'NzA2NjU0Nzk1ODg4NTkwOTE5.Xq9ZkA.hyK30Cc5gELcWeioi2oe6uqHDR4'
 client = commands.Bot(command_prefix = '!') 
 client.remove_command('help')
 
@@ -35,10 +35,12 @@ async def on_message(message):
         return False
     elif '!leaderboard' in message.content:
         return False
+    elif '!withdrawl' in message.content:
+        return False
+    elif message.author.name == 'Noodle Bot':
+        return False
     else:
         await AddMoney(message.author, 1)
-    
-
     
 @client.event
 async def on_member_join(member):
@@ -54,12 +56,10 @@ async def balance(ctx, user: discord.Member):
     with open("users.json", "r") as f:
         users = json.load(f)
 
-    if user == None:
-        await ctx.send("Please enter a member! Try again!")
-        return
-
-    await open_account(user)
-
+    try:
+        await open_account(user)
+    except:
+        ctx.send("Please enter a member name! Try Again!")
     wallet_amt = users[str(user.id)]["wallet"]
 
     await ctx.send(f"{user.mention} has {wallet_amt} noodles!")
@@ -421,25 +421,26 @@ async def removerole(ctx,*,message):
 
 
 #roaster
-# @client.event
-# async def on_command_error(ctx, error):
+@client.event
+async def on_command_error(ctx, error):
 
-#     if isinstance(error, commands.CommandNotFound):
+    if isinstance(error, commands.CommandNotFound):
 
-#         roasts = ['Imagine being a dummy', 'Imagine not reading the !help page', 'lol what a bot. I bet my code has more brain than u.', 'Nice try stupid. Next time try harder.', 'Yooo we got a dumb one here guys.', 'Haha i bet noodle is smarter than u.']
+        roasts = ['Imagine being a dummy', 'Imagine not reading the !help page', 'lol what a bot. I bet my code has more brain than u.', 'Nice try stupid. Next time try harder.', 'Yooo we got a dumb one here guys.', 'Haha i bet noodle is smarter than u.']
 
-#         await ctx.send('Shout out to ' + ctx.message.author.mention + ' for getting the command wrong.')
-#         await ctx.send(random.choice(roasts))
+        await ctx.send('Shout out to ' + ctx.message.author.mention + ' for getting the command wrong.')
+        await ctx.send(random.choice(roasts))
 
          
         
-#         print(str(ctx.message.author) + ' Used this: ' + str(ctx.message.content) + ' Instead of the correct command.')
-#     if isinstance(error, discord.ext.commands.errors.CommandOnCooldown):
-#         if error.retry_after > 60:
-#             minutes = int(error.retry_after) / 60
-#             await ctx.send("Sorry, that command is on cooldown for {:.0f} more minutes.".format(minutes))
-#         else:
-#             await ctx.send("Sorry, that command is on cooldown for {:.0f} more seconds.").format(error.retry_after)
+        print(str(ctx.message.author) + ' Used this: ' + str(ctx.message.content) + ' Instead of the correct command.')
+    
+    if isinstance(error, discord.ext.commands.errors.CommandOnCooldown):
+        if error.retry_after > 60:
+            minutes = int(error.retry_after) / 60
+            await ctx.send("Sorry, that command is on cooldown for {:.0f} more minutes.".format(minutes))
+        else:
+            await ctx.send("Sorry, that command is on cooldown for {:.0f} more seconds.").format(error.retry_after)
 
 # #censor
 @client.command()
@@ -613,5 +614,3 @@ async def ball(ctx,*,message):
     print('=======')
 
 client.run(token)
-
-input("Enter to go bye bye")
