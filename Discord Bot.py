@@ -50,13 +50,15 @@ async def on_member_join(member):
     await member.add_roles(role)
 
 @client.command()
-async def balance(ctx):
+async def balance(ctx, user: discord.Member):
     with open("users.json", "r") as f:
         users = json.load(f)
 
-    await open_account(ctx.author)
+    if user == None:
+        await ctx.send("Please enter a member! Try again!")
+        return
 
-    user = ctx.author
+    await open_account(user)
 
     wallet_amt = users[str(user.id)]["wallet"]
 
