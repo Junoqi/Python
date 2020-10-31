@@ -4,12 +4,14 @@ import asyncio
 import json 
 import random
 import time
+import youtube_dl
 
 #discord
-token = ''
+token = 'NzA2NjU0Nzk1ODg4NTkwOTE5.Xq9ZkA.G66ZOu__bDHzj9FC_3BG4THJOxg'
 client = commands.Bot(command_prefix = '!') 
 client.remove_command('help')
 
+youtube_dl.utils.bug_reports_message = lambda: ''
 
 #when logged on
 @client.event  
@@ -35,20 +37,20 @@ async def on_message(message):
         return False
     elif '!leaderboard' in message.content:
         return False
-    elif '!withdrawl' in message.content:
+    elif '!withdraw' in message.content:
         return False
     elif message.author.name == 'Noodle bot':
         return False
     else:
         await AddMoney(message.author, 1)
-    
+
 @client.event
 async def on_member_join(member):
     for channel in member.guild.channels:
         if str(channel) == "roles":
             await channel.send(f"Hey {member.mention}! Welcome to the Noodle Gang server :) Please use  the !Role command + (minecraft overwatch valorant minecraft destiny2 siege) in the roles channel so that we can identify what games you play!")
     
-    role = discord.utils.get(member.guild.roles, name='noodle')
+    role = discord.utils.get(member.guild.roles,  name='noodle')
     await member.add_roles(role)
 
 @client.command()
@@ -59,10 +61,13 @@ async def balance(ctx, user: discord.Member):
     try:
         await open_account(user)
     except:
-        ctx.send("Please enter a member name! Try Again!")
+        await ctx.send("Please enter a member name! Try Again!")
+
     wallet_amt = users[str(user.id)]["wallet"]
 
     await ctx.send(f"{user.mention} has {wallet_amt} noodles!")
+
+
 
 @client.command()
 @commands.cooldown(1, 3600, commands.BucketType.user)
@@ -126,6 +131,9 @@ async def gamble(ctx,amount = None):
     if amount == None:
         await ctx.send("Please enter the amount")
         return
+    elif amount == str(0):
+        await ctx.send("Cannot gamble less than 1 noodle!")
+        return
 
     wallet_amt = users[str(ctx.author.id)]["wallet"]
 
@@ -155,6 +163,55 @@ async def gamble(ctx,amount = None):
     else:
         await update_bank(ctx.author,-1*amount)
         await ctx.send("You lost!")
+
+
+#why dont you make it so like they can put in an amount they wanna steal and 
+#they have like a 30% success rate and if it fails they pay the robbed person that amount
+@client.command()
+async def rob(ctx, victim:discord.Member, amount = None):
+
+    with open("users.json", "r") as f:
+        users = json.load(f)
+
+    
+    await open_account(ctx.author)
+    await open_account(victim)
+
+    channel = ctx.message.channel
+
+    if amount == None:
+        await ctx.send("Please enter an amount! Try Again!")
+        return
+    elif amount == int(0):
+        await ctx.send("Cannont rob for less than 1 noodle!")
+        return 
+    elif int(amount) < 0:
+        await ctx.send("Amount cannot be negative!")
+        return
+
+    await channel.send(f"{victim.mention} You are being robbed for {amount} noodles!")  
+    await channel.send('Rolling dice...')
+    
+    dice1 = random.randint(1,3)
+    dice2 = random.randint(1,3)
+
+    amount = int(amount)
+
+    if int(dice1) == int(dice2):
+        await ctx.send("WHEW! Robbery has been avoided! Robber has been punished.")
+        await update_bank(ctx.author, -1*amount)
+        await update_bank(victim, amount)
+        return
+
+    else:
+        await ctx.send(f"RIP! You have been robbed for {amount}")
+        await update_bank(victim, -1*amount)
+        await update_bank(ctx.author, amount)
+        return
+
+    with open('users.json', 'w') as outfile:
+        json.dump(users, outfile)    
+
 
 @client.command()
 async def leaderboard(ctx, x = 5):
@@ -222,31 +279,31 @@ async def send(ctx,member:discord.Member,amount = None):
 async def update_bank(user, change = 0):
     with open("users.json", "r") as f:
         users = json.load(f)
-
+    
     users[str(user.id)]["wallet"] += change
 
     with open('users.json', 'w') as outfile:
         json.dump(users, outfile)
 
 
-async def AddMoney(user, amount):
+async def AddMoney(user, change):
     with open("users.json", "r") as f:
         users = json.load(f)
 
     await open_account(user)
 
-    users[str(user.id)]["wallet"] += amount
+    users[str(user.id)]["wallet"] += change
 
     with open('users.json', 'w') as outfile:
         json.dump(users, outfile)
 
-async def SubMoney(user, amount):
+async def SubMoney(user, change):
     with open("users.json", "r") as f:
         users = json.load(f)
 
     await open_account(user)
 
-    users[str(user.id)]["wallet"] - amount
+    users[str(user.id)]["wallet"] - change
 
     with open('users.json', 'w') as outfile:
         json.dump(users, outfile)
@@ -442,6 +499,9 @@ async def on_command_error(ctx, error):
         else:
             await ctx.send("Sorry, that command is on cooldown for {:.0f} more seconds.").format(error.retry_after)
 
+    if isinstance(error, discord.ext.commands.errors.MissingRequiredArgument):
+        await ctx.send("There are one or more missing parameters... Try again")
+
 # #censor
 @client.command()
 @commands.cooldown(1, 30, commands.BucketType.user)
@@ -619,3 +679,5 @@ async def ball(ctx,*,message):
     print('=======')
 
 client.run(token)
+
+input("Enter to go bye bye")
