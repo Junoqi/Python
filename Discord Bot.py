@@ -4,14 +4,12 @@ import asyncio
 import json 
 import random
 import time
-import youtube_dl
 
 #discord
 token = 'NzA2NjU0Nzk1ODg4NTkwOTE5.Xq9ZkA.G66ZOu__bDHzj9FC_3BG4THJOxg'
 client = commands.Bot(command_prefix = '!') 
 client.remove_command('help')
 
-youtube_dl.utils.bug_reports_message = lambda: ''
 
 #when logged on
 @client.event  
@@ -151,7 +149,7 @@ async def gamble(ctx,amount = None):
     
     final_list = []
     for i in range(3):
-        choices = random.choice(["💩","👩","👨"])
+        choices = random.choice([":poop:",":woman:",":man:"])
 
         final_list.append(choices)
 
@@ -187,6 +185,9 @@ async def rob(ctx, victim:discord.Member, amount = None):
         return 
     elif int(amount) < 0:
         await ctx.send("Amount cannot be negative!")
+        return
+    elif amount > 100:
+        await ctx.send("You cannot rob for more than 100 noodles!")
         return
 
     await channel.send(f"{victim.mention} You are being robbed for {amount} noodles!")  
