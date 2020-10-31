@@ -166,6 +166,7 @@ async def gamble(ctx,amount = None):
 #why dont you make it so like they can put in an amount they wanna steal and 
 #they have like a 30% success rate and if it fails they pay the robbed person that amount
 @client.command()
+@commands.cooldown(1, 60, commands.BucketType.user)
 async def rob(ctx, victim:discord.Member, amount = None):
 
     with open("users.json", "r") as f:
@@ -186,7 +187,7 @@ async def rob(ctx, victim:discord.Member, amount = None):
     elif int(amount) < 0:
         await ctx.send("Amount cannot be negative!")
         return
-    elif amount > 100:
+    elif int(amount) > 100:
         await ctx.send("You cannot rob for more than 100 noodles!")
         return
 
