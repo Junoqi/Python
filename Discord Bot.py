@@ -6,8 +6,8 @@ import random
 import time
 
 #discord
-token = 'NzA2NjU0Nzk1ODg4NTkwOTE5.Xq9ZkA.G66ZOu__bDHzj9FC_3BG4THJOxg'
-client = commands.Bot(command_prefix = '!') 
+token = 'NzA2NjU0Nzk1ODg4NTkwOTE5.Xq9ZkA.Rx5Fkg_Ap7EPQM8-YBODvR9A6Vg'
+client = commands.Bot(command_prefix = '!', case_insensitive=True) 
 client.remove_command('help')
 
 
@@ -38,6 +38,8 @@ async def on_message(message):
     elif '!withdraw' in message.content:
         return False
     elif message.author.name == 'Noodle bot':
+        return False
+    elif message.author.name == 'Noodle Jam Bot':
         return False
     else:
         await AddMoney(message.author, 1)
@@ -181,6 +183,9 @@ async def rob(ctx, victim:discord.Member, amount = None):
     if amount == None:
         await ctx.send("Please enter an amount! Try Again!")
         return
+    if ctx.author.name == victim.name:
+        await ctx.send("You cant rob yourself moron!")
+        return
     elif amount == int(0):
         await ctx.send("Cannont rob for less than 1 noodle!")
         return 
@@ -223,8 +228,6 @@ async def leaderboard(ctx, x = 5):
     if x > len(users):
         await ctx.send("There aren't that many member accounts! Try again!")
         return
-
-
     leader_board = {}
     total = []
     for user in users:
@@ -232,22 +235,18 @@ async def leaderboard(ctx, x = 5):
         total_amount = users[user]["wallet"]
         leader_board[total_amount] = name 
         total.append(total_amount)
-
     total = sorted(total,reverse=True)
-
     em = discord.Embed(title = f"Top {x} Richest Server Members")
     index = 1
     for amt in total:
         id_ = leader_board[amt]
         member = client.get_user(id_)
-        name = member.name
-        em.add_field(name = f"{index}. {name}", value = f"{amt}", inline = False)
+        em.add_field(name = f"{index}. {member}", value = f"{amt}", inline = False)
         if index == x:
             break
         else:
             index += 1
-
-    await ctx.send(embed = em)     
+    await ctx.send(embed = em)    
 
 @client.command()
 async def send(ctx,member:discord.Member,amount = None):
@@ -480,29 +479,29 @@ async def removerole(ctx,*,message):
 
 
 #roaster
-@client.event
-async def on_command_error(ctx, error):
+# @client.event
+# async def on_command_error(ctx, error):
 
-    if isinstance(error, commands.CommandNotFound):
+#     if isinstance(error, commands.CommandNotFound):
 
-        roasts = ['Imagine being a dummy', 'Imagine not reading the !help page', 'lol what a bot. I bet my code has more brain than u.', 'Nice try stupid. Next time try harder.', 'Yooo we got a dumb one here guys.', 'Haha i bet noodle is smarter than u.']
+#         roasts = ['Imagine being a dummy', 'Imagine not reading the !help page', 'lol what a bot. I bet my code has more brain than u.', 'Nice try stupid. Next time try harder.', 'Yooo we got a dumb one here guys.', 'Haha i bet noodle is smarter than u.']
 
-        await ctx.send('Shout out to ' + ctx.message.author.mention + ' for getting the command wrong.')
-        await ctx.send(random.choice(roasts))
+#         await ctx.send('Shout out to ' + ctx.message.author.mention + ' for getting the command wrong.')
+#         await ctx.send(random.choice(roasts))
 
          
         
-        print(str(ctx.message.author) + ' Used this: ' + str(ctx.message.content) + ' Instead of the correct command.')
+#         print(str(ctx.message.author) + ' Used this: ' + str(ctx.message.content) + ' Instead of the correct command.')
     
-    if isinstance(error, discord.ext.commands.errors.CommandOnCooldown):
-        if error.retry_after > 60:
-            minutes = int(error.retry_after) / 60
-            await ctx.send("Sorry, that command is on cooldown for {:.0f} more minutes.".format(minutes))
-        else:
-            await ctx.send("Sorry, that command is on cooldown for {:.0f} more seconds.").format(error.retry_after)
+#     if isinstance(error, discord.ext.commands.errors.CommandOnCooldown):
+#         if error.retry_after > 60:
+#             minutes = int(error.retry_after) / 60
+#             await ctx.send("Sorry, that command is on cooldown for {:.0f} more minutes.".format(minutes))
+#         else:
+#             await ctx.send("Sorry, that command is on cooldown for {:.0f} more seconds.".format(error.retry_after))
 
-    if isinstance(error, discord.ext.commands.errors.MissingRequiredArgument):
-        await ctx.send("There are one or more missing parameters... Try again")
+#     if isinstance(error, discord.ext.commands.errors.MissingRequiredArgument):
+#         await ctx.send("There are one or more missing parameters... Try again")
 
 # #censor
 @client.command()
@@ -573,7 +572,8 @@ async def help(ctx):
     embed.add_field(name='!leaderboard', value='!leaderboard + AMOUNT returns the top AMOUNT richest member of the server ', inline=False)
     embed.add_field(name='!beg', value='The gods gift the user a random amount of noodles between 1-10. Can only be used once per hour.', inline=False)
     embed.add_field(name='!send', value='!send + @User + AMOUNT sends @User AMOUNT noodles.', inline=False)
-
+    embed.add_field(name='!rob', value='!rob + @User + AMOUNT robs @User AMOUNT noodles, or gives @user AMOUNT.', inline=False)
+    
 
     await ctx.send(embed=embed)
     print(str(ctx.message.author) + ' opened the !help page.')
