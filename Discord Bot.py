@@ -6,7 +6,7 @@ import random
 import time
 
 #discord
-token = 'NzA2NjU0Nzk1ODg4NTkwOTE5.Xq9ZkA.Rx5Fkg_Ap7EPQM8-YBODvR9A6Vg'
+token = ''
 client = commands.Bot(command_prefix = '!', case_insensitive=True) 
 client.remove_command('help')
 
@@ -64,8 +64,9 @@ async def balance(ctx, user: discord.Member):
         await ctx.send("Please enter a member name! Try Again!")
 
     wallet_amt = users[str(user.id)]["wallet"]
+    bank_amt = users[str(user.id)]["bank"]
 
-    await ctx.send(f"{user.mention} has {wallet_amt} noodles!")
+    await ctx.send(f"{user.mention} has {wallet_amt} noodles in their wallet, and {bank_amt} in their bank!")
 
 
 
@@ -93,6 +94,35 @@ async def beg(ctx):
 # async def BankCreated(channel):
 #     await channel.send(f"Account has been created :)")
 
+
+@client.command()
+async def deposit(ctx,amount = None):
+
+    with open("users.json", "r") as f:
+        users = json.load(f)
+
+    await open_account(ctx.author)
+
+    if amount == None:
+        await ctx.send("Please enter the amount")
+        return
+
+    wallet_amt = users[str(ctx.author.id)]["wallet"]
+    bank_amt = users[str(ctx.author.id)]["bank"]
+
+    amount = int(amount)
+    if amount>wallet_amt:
+        await ctx.send("You dont have sufficient funds!")
+        return
+    elif amount<0:
+        await ctx.send("Amount must be positive")
+        return
+
+    await SubMoney(ctx.author, amount)
+    await update_bank(ctx.author, amount)
+
+    await ctx.send(f"You deposited {amount} noodles")
+
 @client.command()
 async def withdraw(ctx,amount = None):
 
@@ -106,10 +136,10 @@ async def withdraw(ctx,amount = None):
         return
 
     wallet_amt = users[str(ctx.author.id)]["wallet"]
-
+    bank_amt = users[str(ctx.author.id)]["bank"]
 
     amount = int(amount)
-    if amount>wallet_amt:
+    if amount>bank_amt:
         await ctx.send("You dont have sufficient funds!")
         return
     elif amount<0:
@@ -117,6 +147,7 @@ async def withdraw(ctx,amount = None):
         return
     
     await update_bank(ctx.author,-1*amount)
+    await AddMoney(ctx.author, amount)
 
     await ctx.send(f"You withdrew {amount} noodles")
 
@@ -179,6 +210,8 @@ async def rob(ctx, victim:discord.Member, amount = None):
     await open_account(victim)
 
     channel = ctx.message.channel
+    wallet_amt = users[str(victim.id)]["wallet"]
+
 
     if amount == None:
         await ctx.send("Please enter an amount! Try Again!")
@@ -195,6 +228,10 @@ async def rob(ctx, victim:discord.Member, amount = None):
     elif int(amount) > 100:
         await ctx.send("You cannot rob for more than 100 noodles!")
         return
+    elif int(amount) > wallet_amt:
+        await ctx.send(f"You cant rob for more than {victim.mention} has in their wallet!")
+        return
+
 
     await channel.send(f"{victim.mention} You are being robbed for {amount} noodles!")  
     await channel.send('Rolling dice...')
@@ -281,7 +318,7 @@ async def update_bank(user, change = 0):
     with open("users.json", "r") as f:
         users = json.load(f)
     
-    users[str(user.id)]["wallet"] += change
+    users[str(user.id)]["bank"] += change
 
     with open('users.json', 'w') as outfile:
         json.dump(users, outfile)
@@ -304,7 +341,7 @@ async def SubMoney(user, change):
 
     await open_account(user)
 
-    users[str(user.id)]["wallet"] - change
+    users[str(user.id)]["wallet"] -= change
 
     with open('users.json', 'w') as outfile:
         json.dump(users, outfile)
@@ -321,6 +358,7 @@ async def open_account(user):
     else:
         users[str(user.id)] = {}
         users[str(user.id)]["wallet"] = 0
+        users[str(user.id)]["bank"] = 10
         # await BankCreated(user)
 
     with open("users.json", "w") as f:
