@@ -243,7 +243,7 @@ async def rob(ctx, victim:discord.Member, amount = None):
 
     if int(dice1) == int(dice2):
         await ctx.send("WHEW! Robbery has been avoided! Robber has been punished.")
-        await update_bank(ctx.author, -1*amount)
+        await SubMoney(ctx.author, amount)
         await update_bank(victim, amount)
         return
 
@@ -269,7 +269,7 @@ async def leaderboard(ctx, x = 5):
     total = []
     for user in users:
         name = int(user)
-        total_amount = users[user]["wallet"]
+        total_amount = users[user]["wallet"] 
         leader_board[total_amount] = name 
         total.append(total_amount)
     total = sorted(total,reverse=True)
@@ -300,7 +300,6 @@ async def send(ctx,member:discord.Member,amount = None):
 
     wallet_amt = users[str(ctx.author.id)]["wallet"]
 
-
     amount = int(amount)
     if amount>wallet_amt:
         await ctx.send("You dont have sufficient funds!")
@@ -309,8 +308,8 @@ async def send(ctx,member:discord.Member,amount = None):
         await ctx.send("Amount must be positive")
         return
     
-    await update_bank(ctx.author,-1*amount)
-    await update_bank(member,amount)
+    await SubMoney(ctx.author,-1*amount)
+    await AddMoney(member,amount)
 
     await ctx.send(f"{ctx.author.mention} gave {member.mention} {amount} noodles")
 
