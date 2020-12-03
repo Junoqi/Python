@@ -6,7 +6,7 @@ import random
 import time
 
 #discord
-token = 'Nzg0MDg4OTQ1MzY0NTY2MDU2.X8kNvA.-dDsHGPAjfLytImNlQqb2dlHQhA'
+token = ''
 client = commands.Bot(command_prefix = '/', case_insensitive=True) 
 client.remove_command('help')
 
@@ -58,6 +58,45 @@ async def rule(ctx,*,number):
         await ctx.send(f"There is no rule number: {number}")
 
 
+snipe_message_content = None
+snipe_message_author = None
+snipe_message_id = None
+
+@client.event
+async def on_message_delete(message):
+
+    global snipe_message_content
+    global snipe_message_author
+    global snipe_message_id
+
+
+    snipe_message_content = message.content
+    snipe_message_author = message.author.id
+    snipe_message_id = message.id
+
+    await asyncio.sleep(60)
+
+    if message.id == snipe_message_id:
+        snipe_message_author = None
+        snipe_message_content = None
+        snipe_message_id = None
+
+
+@client.command()
+async def snipe(message):
+
+    snipe_name = client.get_user(snipe_message_author)
+
+    if snipe_message_content==None:
+        await message.channel.send("Theres nothing to snipe.")
+
+    else:
+        embed = discord.Embed(description=f"{snipe_message_content}")
+        embed.set_footer(text=f"Asked by {message.author.name}#{message.author.discriminator}", icon_url=message.author.avatar_url)
+        embed.set_author(name= f"{snipe_name.name} said:")
+        await message.channel.send(embed=embed)
+        return
+
 #help embed
 @client.command()
 async def help(ctx):
@@ -68,11 +107,11 @@ async def help(ctx):
     )
 
     embed.set_author(name='Help')
-    embed.add_field(name='!ant', value='Says: Kinda awk', inline=False)
-    embed.add_field(name='!lhey', value='Says: lol hey', inline=False)
-    embed.add_field(name='!heyl', value='Says: hey lol', inline=False)
-    embed.add_field(name='solly', value='Says: who want me', inline=False)
-    embed.add_field(name='!rule + number', value='Says: rule number *X*', inline=False)
+    embed.add_field(name='/ant', value='Says: Kinda awk', inline=False)
+    embed.add_field(name='/lhey', value='Says: lol hey', inline=False)
+    embed.add_field(name='/heyl', value='Says: hey lol', inline=False)
+    embed.add_field(name='/solly', value='Says: who want me', inline=False)
+    embed.add_field(name='/rule + number', value='Says: rule number *X*', inline=False)
 
 
     await ctx.send(embed=embed)
