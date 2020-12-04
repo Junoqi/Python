@@ -5,7 +5,7 @@ import json
 import random
 import time
 
-#discord
+#discord 
 token = ''
 client = commands.Bot(command_prefix = '/', case_insensitive=True) 
 client.remove_command('help')
@@ -22,26 +22,41 @@ async def on_ready():
 
 @client.command()
 async def awk(ctx):
+    await client.delete_message(ctx.message)
     await ctx.send("Kinda awk")
 
 @client.command()
 async def heyl(ctx):
+    await client.delete_message(ctx.message)
     await ctx.send("hey lol")
 
 @client.command()
-async def ant(ctx):
-    await ctx.send("Kinda awk")
+async def ant(ctx,*,number):
+    if(number == "1"):
+        await ctx.send("Kinda awk")
+    elif(number == "2"):
+        await ctx.send("Sorta awk")
+    elif(number == "3"):
+        await ctx.send("Kind of awk")
+
+    await client.delete_message(ctx.message)
 
 @client.command()
 async def lhey(ctx):
+    await client.delete_message(ctx.message)
     await ctx.send("lol hey")
 
 @client.command()
 async def solly(ctx):
+    await client.delete_message(ctx.message)
     await ctx.send("Who want me?")
+
+
 
 @client.command()
 async def rule(ctx,*,number):
+    await client.delete_message(ctx.message)
+
     if(number == "1"):
         await ctx.send("Rule 1: This is a server used for school, but not moderated by the school. This means that members have more freedom, but we want to keep this a welcoming and friendly environment for everyone. Keep everything PG-13. ")
     elif(number == "2"):
