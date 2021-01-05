@@ -6,7 +6,7 @@ import random
 import time
 
 #discord
-token = 'NzA2NjU0Nzk1ODg4NTkwOTE5.Xq9ZkA.KMshGCT9OqRSAKASp603SHvJan0'
+token = ''
 client = commands.Bot(command_prefix = '!', case_insensitive=True)
 client.remove_command('help')
 
@@ -55,8 +55,8 @@ async def on_member_join(member):
 @client.event
 async def on_member_remove(member):
     for channel in member.guild.channels:
-        if str(channel) == "roles":
-            await ctx.send(f"{member} Has left the server. They will be missed!")
+        if str(channel) == "leavelog":
+            await channel.send(f"{member.mention} Has left the server. They will be missed!")
 
 @client.command()
 async def balance(ctx, user: discord.Member):
@@ -724,3 +724,4 @@ async def ball(ctx,*,message):
 client.run(token)
 
 input("Enter to go bye bye")
+t
