@@ -1,29 +1,28 @@
 import discord
 from discord.ext import commands
 import asyncio
-import json 
+import json
 import random
 import time
 
 #discord
-token = ''
-client = commands.Bot(command_prefix = '!', case_insensitive=True) 
+token = 'NzA2NjU0Nzk1ODg4NTkwOTE5.Xq9ZkA.KMshGCT9OqRSAKASp603SHvJan0'
+client = commands.Bot(command_prefix = '!', case_insensitive=True)
 client.remove_command('help')
 
-
+print('poop')
 #when logged on
-@client.event  
-async def on_ready():  
+@client.event
+async def on_ready():
     print(f'We have logged in as {client.user}')
     await client.change_presence(activity=discord.Game(name="Goldfish Eating Sim"))
     print('Latency: ' + str(round(client.latency * 1000, 2)))
     print('==============')
 
-
 @client.event
-async def on_message(message):  
+async def on_message(message):
     print(f"{message.channel}: {message.author.name}: {message.content}")
-    await client.process_commands(message) 
+    await client.process_commands(message)
 
     await open_account(message.author)
 
@@ -49,9 +48,15 @@ async def on_member_join(member):
     for channel in member.guild.channels:
         if str(channel) == "roles":
             await channel.send(f"Hey {member.mention}! Welcome to the Noodle Gang server :) Please use  the !Role command + (minecraft overwatch valorant minecraft destiny2 siege) in the roles channel so that we can identify what games you play!")
-    
+
     role = discord.utils.get(member.guild.roles,  name='noodle')
     await member.add_roles(role)
+
+@client.event
+async def on_member_remove(member):
+    for channel in member.guild.channels:
+        if str(channel) == "roles":
+            await ctx.send(f"{member} Has left the server. They will be missed!")
 
 @client.command()
 async def balance(ctx, user: discord.Member):
@@ -81,13 +86,13 @@ async def beg(ctx):
 
     await open_account(ctx.author)
 
-        
+
     earnings = random.randrange(10)
 
     users[str(user.id)]["wallet"] += earnings
 
     await ctx.send(f"Noodle god gave you {earnings} noodles!")
- 
+
     with open('users.json', 'w') as outfile:
         json.dump(users, outfile)
 
@@ -145,7 +150,7 @@ async def withdraw(ctx,amount = None):
     elif amount<0:
         await ctx.send("Amount must be positive")
         return
-    
+
     await update_bank(ctx.author,-1*amount)
     await AddMoney(ctx.author, amount)
 
@@ -179,7 +184,6 @@ async def gamble(ctx,amount = None):
     elif amount<0:
         await ctx.send("Amount must be positive")
         return
-    
     final_list = []
     for i in range(3):
         choices = random.choice([":poop:",":woman:",":man:"])
@@ -196,7 +200,7 @@ async def gamble(ctx,amount = None):
         await ctx.send("You lost!")
 
 
-#why dont you make it so like they can put in an amount they wanna steal and 
+#why dont you make it so like they can put in an amount they wanna steal and
 #they have like a 30% success rate and if it fails they pay the robbed person that amount
 @client.command()
 @commands.cooldown(1, 60, commands.BucketType.user)
@@ -205,7 +209,7 @@ async def rob(ctx, victim:discord.Member, amount = None):
     with open("users.json", "r") as f:
         users = json.load(f)
 
-    
+
     await open_account(ctx.author)
     await open_account(victim)
 
@@ -221,7 +225,7 @@ async def rob(ctx, victim:discord.Member, amount = None):
         return
     elif amount == int(0):
         await ctx.send("Cannont rob for less than 1 noodle!")
-        return 
+        return
     elif int(amount) < 0:
         await ctx.send("Amount cannot be negative!")
         return
@@ -233,9 +237,9 @@ async def rob(ctx, victim:discord.Member, amount = None):
         return
 
 
-    await channel.send(f"{victim.mention} You are being robbed for {amount} noodles!")  
+    await channel.send(f"{victim.mention} You are being robbed for {amount} noodles!")
     await channel.send('Rolling dice...')
-    
+
     dice1 = random.randint(1,3)
     dice2 = random.randint(1,3)
 
@@ -254,14 +258,14 @@ async def rob(ctx, victim:discord.Member, amount = None):
         return
 
     with open('users.json', 'w') as outfile:
-        json.dump(users, outfile)    
+        json.dump(users, outfile)
 
 
 @client.command()
 async def leaderboard(ctx, x = 5):
     with open("users.json", "r") as f:
         users = json.load(f)
-    
+
     if x > len(users):
         await ctx.send("There aren't that many member accounts! Try again!")
         return
@@ -269,8 +273,8 @@ async def leaderboard(ctx, x = 5):
     total = []
     for user in users:
         name = int(user)
-        total_amount = users[user]["wallet"] 
-        leader_board[total_amount] = name 
+        total_amount = users[user]["wallet"]
+        leader_board[total_amount] = name
         total.append(total_amount)
     total = sorted(total,reverse=True)
     em = discord.Embed(title = f"Top {x} Richest Server Members")
@@ -283,7 +287,7 @@ async def leaderboard(ctx, x = 5):
             break
         else:
             index += 1
-    await ctx.send(embed = em)    
+    await ctx.send(embed = em)
 
 @client.command()
 async def send(ctx,member:discord.Member,amount = None):
@@ -293,7 +297,7 @@ async def send(ctx,member:discord.Member,amount = None):
 
     await open_account(ctx.author)
     await open_account(member)
-    
+
     if amount == None:
         await ctx.send("Please enter the amount")
         return
@@ -307,7 +311,7 @@ async def send(ctx,member:discord.Member,amount = None):
     elif amount<0:
         await ctx.send("Amount must be positive")
         return
-    
+
     await SubMoney(ctx.author,-1*amount)
     await AddMoney(member,amount)
 
@@ -316,7 +320,7 @@ async def send(ctx,member:discord.Member,amount = None):
 async def update_bank(user, change = 0):
     with open("users.json", "r") as f:
         users = json.load(f)
-    
+
     users[str(user.id)]["bank"] += change
 
     with open('users.json', 'w') as outfile:
@@ -385,7 +389,7 @@ async def role(ctx,*,message):
         role = discord.utils.get(member.guild.roles, name='siege')
         await member.add_roles(role)
         await ctx.send("Siege Role added :)")
-    
+
     elif(message.lower() == 'destiny2'):
 
         member = ctx.message.author
@@ -401,7 +405,7 @@ async def role(ctx,*,message):
         role = discord.utils.get(member.guild.roles, name='minecraft')
         await member.add_roles(role)
         await ctx.send("Minecraft Role added :)")
-    
+
     elif(message.lower() == 'overwatch'):
 
         member = ctx.message.author
@@ -409,26 +413,26 @@ async def role(ctx,*,message):
         role = discord.utils.get(member.guild.roles, name='overwatch')
         await member.add_roles(role)
         await ctx.send("Overwatch Role added :)")
-    
+
     elif(message.lower() == 'big boi'):
 
         member = ctx.message.author
 
         role = discord.utils.get(member.guild.roles, name='big boi')
         await member.add_roles(role)
-        await ctx.send("Big boi role added :) (Warning! This is an NSFW role!)")   
-        
+        await ctx.send("Big boi role added :) (Warning! This is an NSFW role!)")
+
     elif(message.lower() == 'halo'):
 
         member = ctx.message.author
 
         role = discord.utils.get(member.guild.roles, name='halo')
         await member.add_roles(role)
-        await ctx.send("Halo Role added :)") 
+        await ctx.send("Halo Role added :)")
 
     elif(message.lower() == 'noodle mod'):
         await ctx.send("Please contact and Admin if you would like to become an administrator or moderator")
-    
+
     else:
         await ctx.send('''Sorry :( That isn't a game this server supports right now. Contact an administrator  if you want to add that to the list of roles.''')
 
@@ -450,7 +454,7 @@ async def removerole(ctx,*,message):
         role = discord.utils.get(member.guild.roles, name='siege')
         await member.remove_roles(role)
         await ctx.send("Siege Role removed :(")
-    
+
     elif(message.lower() == 'destiny2'):
 
         member = ctx.message.author
@@ -466,7 +470,7 @@ async def removerole(ctx,*,message):
         role = discord.utils.get(member.guild.roles, name='minecraft')
         await member.remove_roles(role)
         await ctx.send("Minecraft Role removed :(")
-    
+
     elif(message.lower() == 'overwatch'):
 
         member = ctx.message.author
@@ -474,22 +478,22 @@ async def removerole(ctx,*,message):
         role = discord.utils.get(member.guild.roles, name='overwatch')
         await member.remove_roles(role)
         await ctx.send("Overwatch Role removed :(")
-    
+
     elif(message.lower() == 'big boi'):
 
         member = ctx.message.author
 
         role = discord.utils.get(member.guild.roles, name='big boi')
         await member.remove_roles(role)
-        await ctx.send("Big boi role removed :(")   
-        
+        await ctx.send("Big boi role removed :(")
+
     elif(message.lower() == 'halo'):
 
         member = ctx.message.author
 
         role = discord.utils.get(member.guild.roles, name='halo')
         await member.remove_roles(role)
-        await ctx.send("Halo Role removed :(") 
+        await ctx.send("Halo Role removed :(")
 
     elif(message.lower() == 'all'):
 
@@ -509,7 +513,7 @@ async def removerole(ctx,*,message):
         await member.remove_roles(role4)
         await member.remove_roles(role5)
 
-        await ctx.send("All roles removed :(") 
+        await ctx.send("All roles removed :(")
 
 
 
@@ -526,10 +530,10 @@ async def removerole(ctx,*,message):
 #         await ctx.send('Shout out to ' + ctx.message.author.mention + ' for getting the command wrong.')
 #         await ctx.send(random.choice(roasts))
 
-         
-        
+
+
 #         print(str(ctx.message.author) + ' Used this: ' + str(ctx.message.content) + ' Instead of the correct command.')
-    
+
 #     if isinstance(error, discord.ext.commands.errors.CommandOnCooldown):
 #         if error.retry_after > 60:
 #             minutes = int(error.retry_after) / 60
@@ -582,7 +586,7 @@ async def gun(ctx):
 
     await ctx.send('Primary: ' + random.choice(PrimGuns))
     await ctx.send('Secondary: ' + random.choice(SecGuns))
-    
+
 #clear messages
 @client.command()
 @commands.has_permissions(manage_messages=True)
@@ -610,7 +614,7 @@ async def help(ctx):
     embed.add_field(name='!beg', value='The gods gift the user a random amount of noodles between 1-10. Can only be used once per hour.', inline=False)
     embed.add_field(name='!send', value='!send + @User + AMOUNT sends @User AMOUNT noodles.', inline=False)
     embed.add_field(name='!rob', value='!rob + @User + AMOUNT robs @User AMOUNT noodles, or gives @user AMOUNT.', inline=False)
-    
+
 
     await ctx.send(embed=embed)
     print(str(ctx.message.author) + ' opened the !help page.')
@@ -622,7 +626,7 @@ async def sleep(ctx, *, message):
     if(ctx.message.author.name == 'Junoqi'):
         await ctx.send('Noodle Bot will be logging off for the night. See you in the morning! :)')
         exit()
-    
+
     else:
         await ctx.send('You do not have permissions to excecute this command')
 
@@ -652,7 +656,7 @@ async def sleep(ctx, *, message):
 
 #             await ctx.send(id + ' it appears you are late')
 
-    
+
 #     elif message.lower() == 'variable':
 #         id = '<@414179453158293506>'
 
@@ -666,7 +670,7 @@ async def sleep(ctx, *, message):
 #         for x in range(5):
 
 #             await ctx.send(id + ' it appears you are late')
-    
+
 #     elif message.lower() == 'everyone':
 #         id = '<@321370792682192896>'
 #         id1 = '<@477961589178499094>'
@@ -683,7 +687,7 @@ async def sleep(ctx, *, message):
 #             await ctx.send(id4 + ' it appears you are late')
 
 
-    
+
 
 
 #8 ballc
