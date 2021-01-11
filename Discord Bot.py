@@ -5,8 +5,9 @@ import json
 import random
 import time
 
+
 #discord
-token = ''
+token = '\'
 client = commands.Bot(command_prefix = '!', case_insensitive=True)
 client.remove_command('help')
 
@@ -19,33 +20,17 @@ async def on_ready():
     print('Latency: ' + str(round(client.latency * 1000, 2)))
     print('==============')
 
-@client.event
-async def on_message(message):
-    print(f"{message.channel}: {message.author.name}: {message.content}")
-    await client.process_commands(message)
-
-    await open_account(message.author)
-
-    if message.content == '!beg':
-        return False
-    elif message.content == '!balance':
-        return False
-    elif '!send' in message.content:
-        return False
-    elif '!leaderboard' in message.content:
-        return False
-    elif '!withdraw' in message.content:
-        return False
-    elif message.author.name == 'Noodle bot':
-        return False
-    elif message.author.name == 'Noodle Jam Bot':
-        return False
-    else:
-        await AddMoney(message.author, 1)
+@client.command()
+async def vote(ctx, *, message):
+    guild = client.guilds[0]
+    emojiYes = discord.utils.get(guild.emojis, name='VoteYes')
+    emojiNo = discord.utils.get(guild.emojis, name='VoteNo')
+    await ctx.message.add_reaction(emojiYes)
+    await ctx.message.add_reaction(emojiNo)
 
 @client.event
 async def on_member_join(member):
-    for channel in member.guild.channels:
+    for channel in member .guild.channels:
         if str(channel) == "roles":
             await channel.send(f"Hey {member.mention}! Welcome to the Noodle Gang server :) Please use  the !Role command + (minecraft overwatch valorant minecraft destiny2 siege) in the roles channel so that we can identify what games you play!")
 
@@ -614,6 +599,7 @@ async def help(ctx):
     embed.add_field(name='!beg', value='The gods gift the user a random amount of noodles between 1-10. Can only be used once per hour.', inline=False)
     embed.add_field(name='!send', value='!send + @User + AMOUNT sends @User AMOUNT noodles.', inline=False)
     embed.add_field(name='!rob', value='!rob + @User + AMOUNT robs @User AMOUNT noodles, or gives @user AMOUNT.', inline=False)
+    embed.add_field(name='!vote', value='Use this command to start a poll!', inline=False)
 
 
     await ctx.send(embed=embed)
@@ -690,7 +676,7 @@ async def sleep(ctx, *, message):
 
 
 
-#8 ballc
+#8 ball
 @client.command()
 async def ball(ctx,*,message):
     responses = ['As I see it, yes.',
