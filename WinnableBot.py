@@ -4,7 +4,7 @@ import asyncio
 import random
 from random import randint
 
-token = 'ODAwMTE2Njg2OTI5NTI2Nzk1.YANcuw.ZF539HG3BxTO-_HME4MdNEK9_fc'
+token = ''
 client = commands.Bot(command_prefix = '/', case_insensitive=True)
 client.remove_command('help')
 
@@ -24,6 +24,20 @@ async def twitch(ctx):
 #Excuses
 @client.command()
 async def excuses(ctx):
-    await ctx.send('ItzWinnable has made ' + str(randint(1, 999)) + ',' + str(randint(1, 999)) + ',' + str(randint(1, 999)) + ' excuses')
+    await ctx.send('ItzWinnable has made ' + str(randint(100, 999)) + ',' + str(randint(100, 999)) + ',' + str(randint(100, 999)) + ' excuses')
+
+#help embed
+@client.command()
+async def help(ctx):
+    author = ctx.message.author.mention
+
+    embed = discord.Embed(
+        colour = discord.Color.orange()
+    )
+
+    embed.set_author(name='Help')
+    embed.add_field(name='/twitch', value='Sends twitch link of ItzWinnable' inline=False)
+    embed.add_field(name='/excuses', value='Use this command to see how many excuses ItzWinnable has made!', inline=False)
+    await ctx.send(embed=embed)
 
 client.run(token)
