@@ -4,7 +4,7 @@ import asyncio
 import random
 from random import randint
 
-token = ''
+token = 'ODAwMTE2Njg2OTI5NTI2Nzk1.YANcuw.ZF539HG3BxTO-_HME4MdNEK9_fc'
 client = commands.Bot(command_prefix = '/', case_insensitive=True)
 client.remove_command('help')
 
@@ -26,6 +26,11 @@ async def twitch(ctx):
 async def excuses(ctx):
     await ctx.send('ItzWinnable has made ' + str(randint(100, 999)) + ',' + str(randint(100, 999)) + ',' + str(randint(100, 999)) + ' excuses')
 
+#playlist
+@client.command()
+async def playlist(ctx):
+    await ctx.send('https://open.spotify.com/playlist/2nt9sdcBmoPaMBRIyxOeTW?si=8uJRb6hwR_OZviw4jEql9Q')
+
 #help embed
 @client.command()
 async def help(ctx):
@@ -39,5 +44,4 @@ async def help(ctx):
     embed.add_field(name='/twitch', value='Sends twitch link of ItzWinnable' inline=False)
     embed.add_field(name='/excuses', value='Use this command to see how many excuses ItzWinnable has made!', inline=False)
     await ctx.send(embed=embed)
-
-client.run(token)
+client.run(token
